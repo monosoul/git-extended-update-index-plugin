@@ -16,3 +16,14 @@ intellij {
     pluginName = "GIT skip-worktree"
     setPlugins("git4idea")
 }
+
+dependencies {
+    val lombokDependency = "org.projectlombok:lombok:1.18.2"
+    annotationProcessor(lombokDependency)
+    compileOnly(lombokDependency)
+    testCompileOnly(lombokDependency)
+}
+
+repositories {
+    jcenter()
+}
