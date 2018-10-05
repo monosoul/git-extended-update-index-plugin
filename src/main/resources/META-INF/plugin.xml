@@ -27,9 +27,12 @@
   </extensions>
 
   <actions>
-    <group id="MyPlugin.ContextMenu">
+    <group id="SkipWorkTree.ContextMenu">
       <separator/>
-      <action id="Myplugin.Textboxes" class="HelloAction" text="Hello" description="Says hello"/>
+      <action id="SkipWorkTree.Skip" class="com.github.monosoul.SkipWorkTreeAction" text="Skip worktree"
+              description="Enable skip worktree for the file"/>
+      <action id="SkipWorkTree.NoSkip" class="com.github.monosoul.NoSkipWorkTreeAction" text="No skip worktree"
+              description="Disable skip worktree for the file"/>
       <add-to-group group-id="Git.ContextMenu" anchor="last"/>
     </group>
   </actions>
