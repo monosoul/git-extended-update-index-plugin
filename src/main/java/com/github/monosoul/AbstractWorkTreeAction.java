@@ -43,8 +43,7 @@ abstract class AbstractWorkTreeAction extends AbstractVcsAction {
            .flatMap(r -> r.getErrorOutput().stream())
            .forEach(log::error);
 
-        val vcsDirtyScopeManager = VcsDirtyScopeManager.getInstance(project);
-        e.getSelectedFilesStream().forEach(vcsDirtyScopeManager::fileDirty);
+        e.getSelectedFilesStream().forEach(VcsDirtyScopeManager.getInstance(project)::fileDirty);
     }
 
     private static class GitLineHandlerCreator implements Function<Entry<VirtualFile, List<VirtualFile>>, GitLineHandler> {
