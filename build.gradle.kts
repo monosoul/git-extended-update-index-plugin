@@ -3,6 +3,7 @@ version = "0.0.1"
 
 plugins {
     id("org.jetbrains.intellij") version "0.3.11"
+    jacoco
 }
 
 java {
@@ -34,6 +35,15 @@ dependencies {
 }
 
 tasks {
+    "jacocoTestReport"(JacocoReport::class) {
+        reports {
+            xml.isEnabled = true
+            html.isEnabled = false
+        }
+
+        val check by tasks
+        check.dependsOn(this)
+    }
     "test"(Test::class) {
         useJUnitPlatform()
     }
