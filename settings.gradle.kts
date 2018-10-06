@@ -1,1 +1,1 @@
-rootProject.name = "intellijgitskipworktree"
+rootProject.name = "git-skip-worktree-plugin"
