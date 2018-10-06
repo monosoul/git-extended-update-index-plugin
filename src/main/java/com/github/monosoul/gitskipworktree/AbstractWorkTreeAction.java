@@ -11,8 +11,10 @@ import com.intellij.openapi.vcs.changes.VcsDirtyScopeManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import git4idea.commands.Git;
 import git4idea.commands.GitLineHandler;
+import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.function.Function;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -43,9 +45,10 @@ abstract class AbstractWorkTreeAction extends AbstractVcsAction {
             return;
         }
 
-        val map = e.getSelectedFilesStream().collect(groupingBy(file -> getVcsRootFor(project, file)));
+        val map = e.getSelectedFilesStream().collect(groupingBy(file -> Optional.ofNullable(getVcsRootFor(project, file))));
         map.entrySet().stream()
-           .filter(entry -> entry.getKey() != null)
+           .filter(entry -> entry.getKey().isPresent())
+           .map(entry -> new SimpleImmutableEntry<>(entry.getKey().get(), entry.getValue()))
            .map(gitLineHandlerCreator(project))
            .map(Git.getInstance()::runCommand)
            .filter(r -> !r.success())
