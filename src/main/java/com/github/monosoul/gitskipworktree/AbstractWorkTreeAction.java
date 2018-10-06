@@ -3,6 +3,7 @@ package com.github.monosoul.gitskipworktree;
 import static com.intellij.vcsUtil.VcsUtil.getVcsRootFor;
 import static java.util.stream.Collectors.groupingBy;
 import com.intellij.openapi.actionSystem.Presentation;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vcs.ProjectLevelVcsManager;
 import com.intellij.openapi.vcs.actions.AbstractVcsAction;
 import com.intellij.openapi.vcs.actions.VcsContext;
@@ -40,12 +41,16 @@ abstract class AbstractWorkTreeAction extends AbstractVcsAction {
         val map = e.getSelectedFilesStream().collect(groupingBy(file -> getVcsRootFor(project, file)));
         map.entrySet().stream()
            .filter(entry -> entry.getKey() != null)
-           .map(new GitLineHandlerCreator(project, skipWorkTreeCommand()))
+           .map(gitLineHandlerCreator(project))
            .map(Git.getInstance()::runCommand)
            .filter(r -> !r.success())
            .flatMap(r -> r.getErrorOutput().stream())
            .forEach(log::error);
 
         e.getSelectedFilesStream().forEach(VcsDirtyScopeManager.getInstance(project)::fileDirty);
+    }
+
+    GitLineHandlerCreator gitLineHandlerCreator(@NotNull final Project project) {
+        return new GitLineHandlerCreator(project, skipWorkTreeCommand());
     }
 }
