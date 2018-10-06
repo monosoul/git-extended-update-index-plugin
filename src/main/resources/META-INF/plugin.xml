@@ -1,40 +1,42 @@
 <idea-plugin>
-  <id>org.jetbrains</id>
-  <name>my_plugin</name>
-  <version>0.0.1</version>
-  <vendor email="dummy" url="dummy">dummy</vendor>
+    <id>org.jetbrains</id>
+    <name>my_plugin</name>
+    <version>0.0.1</version>
+    <vendor email="dummy" url="dummy">dummy</vendor>
 
-  <description><![CDATA[
+    <description><![CDATA[
       Sample plugin.<br>
     ]]></description>
 
-  <change-notes><![CDATA[
+    <change-notes><![CDATA[
       Release 0.0.1: Initial release.<br>
     ]]>
-  </change-notes>
+    </change-notes>
 
-  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-  <idea-version since-build="162"/>
-  <depends>Git4Idea</depends>
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+    <idea-version since-build="162"/>
+    <depends>Git4Idea</depends>
 
-  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
-       on how to target different products -->
-  <!-- uncomment to enable plugin in all products
-  <depends>com.intellij.modules.lang</depends>
-  -->
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <!-- uncomment to enable plugin in all products
+    <depends>com.intellij.modules.lang</depends>
+    -->
 
-  <extensions defaultExtensionNs="com.intellij">
-  </extensions>
+    <extensions defaultExtensionNs="com.intellij">
+    </extensions>
 
-  <actions>
-    <group id="SkipWorkTree.ContextMenu">
-      <separator/>
-      <action id="SkipWorkTree.Skip" class="com.github.monosoul.SkipWorkTreeAction" text="Skip worktree"
-              description="Enable skip worktree for the file"/>
-      <action id="SkipWorkTree.NoSkip" class="com.github.monosoul.NoSkipWorkTreeAction" text="No skip worktree"
-              description="Disable skip worktree for the file"/>
-      <add-to-group group-id="Git.ContextMenu" anchor="last"/>
-    </group>
-  </actions>
+    <actions>
+        <group id="SkipWorkTree.ContextMenu">
+            <separator/>
+            <action id="SkipWorkTree.Skip" class="com.github.monosoul.gitskipworktree.SkipWorkTreeAction"
+                    text="Skip worktree"
+                    description="Enable skip worktree for the file"/>
+            <action id="SkipWorkTree.NoSkip" class="com.github.monosoul.gitskipworktree.NoSkipWorkTreeAction"
+                    text="No skip worktree"
+                    description="Disable skip worktree for the file"/>
+            <add-to-group group-id="Git.ContextMenu" anchor="last"/>
+        </group>
+    </actions>
 
 </idea-plugin>

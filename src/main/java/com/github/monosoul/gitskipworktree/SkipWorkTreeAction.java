@@ -1,6 +1,6 @@
-package com.github.monosoul;
+package com.github.monosoul.gitskipworktree;
 
-import static com.github.monosoul.SkipWorkTreeCommand.SKIP_WORKTREE;
+import static com.github.monosoul.gitskipworktree.SkipWorkTreeCommand.SKIP_WORKTREE;
 
 public class SkipWorkTreeAction extends AbstractWorkTreeAction {
 

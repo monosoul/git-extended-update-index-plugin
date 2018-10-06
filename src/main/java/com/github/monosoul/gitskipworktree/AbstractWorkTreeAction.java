@@ -1,4 +1,4 @@
-package com.github.monosoul;
+package com.github.monosoul.gitskipworktree;
 
 import static com.intellij.vcsUtil.VcsUtil.getVcsRootFor;
 import static git4idea.commands.GitCommand.UPDATE_INDEX;

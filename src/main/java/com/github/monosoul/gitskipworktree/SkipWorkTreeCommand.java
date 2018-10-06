@@ -1,4 +1,4 @@
-package com.github.monosoul;
+package com.github.monosoul.gitskipworktree;
 
 enum SkipWorkTreeCommand {
 
