@@ -8,7 +8,12 @@ import com.intellij.openapi.vcs.ProjectLevelVcsManager;
 import com.intellij.openapi.vcs.actions.AbstractVcsAction;
 import com.intellij.openapi.vcs.actions.VcsContext;
 import com.intellij.openapi.vcs.changes.VcsDirtyScopeManager;
+import com.intellij.openapi.vfs.VirtualFile;
 import git4idea.commands.Git;
+import git4idea.commands.GitLineHandler;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.function.Function;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.jetbrains.annotations.NotNull;
@@ -50,7 +55,7 @@ abstract class AbstractWorkTreeAction extends AbstractVcsAction {
         e.getSelectedFilesStream().forEach(VcsDirtyScopeManager.getInstance(project)::fileDirty);
     }
 
-    GitLineHandlerCreator gitLineHandlerCreator(@NotNull final Project project) {
+    Function<Entry<VirtualFile, List<VirtualFile>>, GitLineHandler> gitLineHandlerCreator(@NotNull final Project project) {
         return new GitLineHandlerCreator(project, skipWorkTreeCommand());
     }
 }
