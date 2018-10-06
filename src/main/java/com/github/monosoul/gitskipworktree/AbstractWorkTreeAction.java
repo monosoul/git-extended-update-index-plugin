@@ -1,20 +1,13 @@
 package com.github.monosoul.gitskipworktree;
 
 import static com.intellij.vcsUtil.VcsUtil.getVcsRootFor;
-import static git4idea.commands.GitCommand.UPDATE_INDEX;
 import static java.util.stream.Collectors.groupingBy;
 import com.intellij.openapi.actionSystem.Presentation;
-import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vcs.ProjectLevelVcsManager;
 import com.intellij.openapi.vcs.actions.AbstractVcsAction;
 import com.intellij.openapi.vcs.actions.VcsContext;
 import com.intellij.openapi.vcs.changes.VcsDirtyScopeManager;
-import com.intellij.openapi.vfs.VirtualFile;
 import git4idea.commands.Git;
-import git4idea.commands.GitLineHandler;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.function.Function;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.jetbrains.annotations.NotNull;
@@ -54,25 +47,5 @@ abstract class AbstractWorkTreeAction extends AbstractVcsAction {
            .forEach(log::error);
 
         e.getSelectedFilesStream().forEach(VcsDirtyScopeManager.getInstance(project)::fileDirty);
-    }
-
-    private static class GitLineHandlerCreator implements Function<Entry<VirtualFile, List<VirtualFile>>, GitLineHandler> {
-
-        private final Project project;
-        private final SkipWorkTreeCommand skipWorkTreeCommand;
-
-        private GitLineHandlerCreator(@NotNull final Project project, @NotNull final SkipWorkTreeCommand skipWorkTreeCommand) {
-            this.project = project;
-            this.skipWorkTreeCommand = skipWorkTreeCommand;
-        }
-
-        @Override
-        public GitLineHandler apply(@NotNull final Entry<VirtualFile, List<VirtualFile>> rootToFilesPair) {
-            val handler = new GitLineHandler(project, rootToFilesPair.getKey(), UPDATE_INDEX);
-            handler.addParameters(skipWorkTreeCommand.getCommand());
-            handler.addRelativeFiles(rootToFilesPair.getValue());
-
-            return handler;
-        }
     }
 }
