@@ -26,7 +26,7 @@ abstract class AbstractWorkTreeAction extends AbstractVcsAction {
     protected abstract SkipWorkTreeCommand skipWorkTreeCommand();
 
     @Override
-    protected void update(@NotNull final VcsContext vcsContext, @NotNull final Presentation presentation) {
+    protected final void update(@NotNull final VcsContext vcsContext, @NotNull final Presentation presentation) {
         val project = vcsContext.getProject();
 
         if (project == null || !ProjectLevelVcsManager.getInstance(project).hasActiveVcss()) {
@@ -39,7 +39,7 @@ abstract class AbstractWorkTreeAction extends AbstractVcsAction {
     }
 
     @Override
-    protected void actionPerformed(@NotNull final VcsContext e) {
+    protected final void actionPerformed(@NotNull final VcsContext e) {
         val project = e.getProject();
         if (project == null) {
             return;

@@ -10,7 +10,7 @@ import java.util.function.Function;
 import lombok.val;
 import org.jetbrains.annotations.NotNull;
 
-class GitLineHandlerCreator implements Function<Entry<VirtualFile, List<VirtualFile>>, GitLineHandler> {
+final class GitLineHandlerCreator implements Function<Entry<VirtualFile, List<VirtualFile>>, GitLineHandler> {
 
     private final Project project;
     private final SkipWorkTreeCommand skipWorkTreeCommand;

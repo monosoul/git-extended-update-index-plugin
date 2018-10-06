@@ -2,7 +2,7 @@ package com.github.monosoul.gitskipworktree;
 
 import static com.github.monosoul.gitskipworktree.SkipWorkTreeCommand.SKIP_WORKTREE;
 
-public class SkipWorkTreeAction extends AbstractWorkTreeAction {
+public final class SkipWorkTreeAction extends AbstractWorkTreeAction {
 
     @Override
     protected SkipWorkTreeCommand skipWorkTreeCommand() {
