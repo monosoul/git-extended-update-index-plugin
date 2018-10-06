@@ -7,7 +7,14 @@
     </vendor>
 
     <description><![CDATA[
-      Sample plugin.<br>
+      Enables support for the next git commands:<br><br>
+      git update-index<br>
+      <ul>
+        <li>--skip-worktree</li>
+        <li>--no-skip-worktree</li>
+        <li>--chmod=+x</li>
+        <li>--chmod=-x</li>
+      </ul>
     ]]></description>
 
     <change-notes><![CDATA[
@@ -15,15 +22,8 @@
     ]]>
     </change-notes>
 
-    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-    <idea-version since-build="162"/>
+    <idea-version since-build="182"/>
     <depends>Git4Idea</depends>
-
-    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
-         on how to target different products -->
-    <!-- uncomment to enable plugin in all products
-    <depends>com.intellij.modules.lang</depends>
-    -->
 
     <extensions defaultExtensionNs="com.intellij">
     </extensions>
