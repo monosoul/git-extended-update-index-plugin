@@ -39,6 +39,10 @@
                     class="com.github.monosoul.git.updateindex.extended.NoSkipWorkTreeAction"
                     text="No skip worktree"
                     description="Disable skip worktree for the file"/>
+            <action id="monosoul.Git.UpdateIndex.Extended.MakeExecutable"
+                    class="com.github.monosoul.git.updateindex.extended.MakeExecutableAction"
+                    text="Make executable"
+                    description="Mark file as executable (chmod +x)"/>
             <add-to-group group-id="Git.ContextMenu" anchor="last"/>
         </group>
     </actions>
