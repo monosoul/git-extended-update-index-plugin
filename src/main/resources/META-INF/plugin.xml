@@ -43,6 +43,10 @@
                     class="com.github.monosoul.git.updateindex.extended.MakeExecutableAction"
                     text="Make executable"
                     description="Mark file as executable (chmod +x)"/>
+            <action id="monosoul.Git.UpdateIndex.Extended.MakeNotExecutable"
+                    class="com.github.monosoul.git.updateindex.extended.MakeNotExecutableAction"
+                    text="Make NOT executable"
+                    description="Mark file as not executable (chmod -x)"/>
             <add-to-group group-id="Git.ContextMenu" anchor="last"/>
         </group>
     </actions>
