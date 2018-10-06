@@ -1,4 +1,4 @@
-package com.github.monosoul.gitskipworktree;
+package com.github.monosoul.git.updateindex.extended;
 
 import static java.util.stream.Stream.generate;
 import static org.mockito.Mockito.doReturn;
@@ -16,7 +16,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 
-class AbstractWorkTreeAction_UpdateTest {
+class AbstractExtendedUpdateIndexAction_UpdateTest {
 
     private static final int LIMIT = 10;
 
@@ -40,7 +40,7 @@ class AbstractWorkTreeAction_UpdateTest {
 
     @ParameterizedTest
     @MethodSource("skipWorkTreeCommandStream")
-    void shouldMakeDisabledAndInvisibleWhenProjectIsNull(final SkipWorkTreeCommand command) {
+    void shouldMakeDisabledAndInvisibleWhenProjectIsNull(final ExtendedUpdateIndexCommand command) {
         when(vcsContext.getProject()).thenReturn(null);
 
         abstractWorkTreeAction(command).update(vcsContext, presentation);
@@ -51,7 +51,7 @@ class AbstractWorkTreeAction_UpdateTest {
 
     @ParameterizedTest
     @MethodSource("skipWorkTreeCommandStream")
-    void shouldMakeDisabledAndInvisibleWhenDoesNotHaveActiveVcss(final SkipWorkTreeCommand command) {
+    void shouldMakeDisabledAndInvisibleWhenDoesNotHaveActiveVcss(final ExtendedUpdateIndexCommand command) {
         when(vcsManager.hasActiveVcss()).thenReturn(false);
 
         abstractWorkTreeAction(command).update(vcsContext, presentation);
@@ -62,7 +62,7 @@ class AbstractWorkTreeAction_UpdateTest {
 
     @ParameterizedTest
     @MethodSource("skipWorkTreeCommandStream")
-    void shouldMakeDisabledAndVisibleWhenBackgroundVcsOperationIsRunning(final SkipWorkTreeCommand command) {
+    void shouldMakeDisabledAndVisibleWhenBackgroundVcsOperationIsRunning(final ExtendedUpdateIndexCommand command) {
         when(vcsManager.isBackgroundVcsOperationRunning()).thenReturn(true);
 
         abstractWorkTreeAction(command).update(vcsContext, presentation);
@@ -74,7 +74,7 @@ class AbstractWorkTreeAction_UpdateTest {
 
     @ParameterizedTest
     @MethodSource("skipWorkTreeCommandStream")
-    void shouldMakeEnabledAndVisible(final SkipWorkTreeCommand command) {
+    void shouldMakeEnabledAndVisible(final ExtendedUpdateIndexCommand command) {
         when(vcsManager.isBackgroundVcsOperationRunning()).thenReturn(false);
 
         abstractWorkTreeAction(command).update(vcsContext, presentation);
@@ -84,11 +84,11 @@ class AbstractWorkTreeAction_UpdateTest {
         verifyNoMoreInteractions(presentation);
     }
 
-    private AbstractWorkTreeAction abstractWorkTreeAction(final SkipWorkTreeCommand command) {
-        return new TestAbstractWorkTreeActionImpl(command);
+    private AbstractExtendedUpdateIndexAction abstractWorkTreeAction(final ExtendedUpdateIndexCommand command) {
+        return new TestAbstractExtendedUpdateIndexActionImpl(command);
     }
 
-    private static Stream<SkipWorkTreeCommand> skipWorkTreeCommandStream() {
+    private static Stream<ExtendedUpdateIndexCommand> skipWorkTreeCommandStream() {
         return generate(Util::getRandomSkipWorkTreeCommand).limit(LIMIT);
     }
 }

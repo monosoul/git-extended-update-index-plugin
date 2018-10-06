@@ -1,4 +1,4 @@
-package com.github.monosoul.gitskipworktree;
+package com.github.monosoul.git.updateindex.extended;
 
 import static git4idea.commands.GitCommand.UPDATE_INDEX;
 import com.intellij.openapi.project.Project;
@@ -13,17 +13,17 @@ import org.jetbrains.annotations.NotNull;
 final class GitLineHandlerCreator implements Function<Entry<VirtualFile, List<VirtualFile>>, GitLineHandler> {
 
     private final Project project;
-    private final SkipWorkTreeCommand skipWorkTreeCommand;
+    private final ExtendedUpdateIndexCommand updateIndexCommand;
 
-    GitLineHandlerCreator(@NotNull final Project project, @NotNull final SkipWorkTreeCommand skipWorkTreeCommand) {
+    GitLineHandlerCreator(@NotNull final Project project, @NotNull final ExtendedUpdateIndexCommand updateIndexCommand) {
         this.project = project;
-        this.skipWorkTreeCommand = skipWorkTreeCommand;
+        this.updateIndexCommand = updateIndexCommand;
     }
 
     @Override
     public GitLineHandler apply(@NotNull final Entry<VirtualFile, List<VirtualFile>> rootToFilesPair) {
         val handler = new GitLineHandler(project, rootToFilesPair.getKey(), UPDATE_INDEX);
-        handler.addParameters(skipWorkTreeCommand.getCommand());
+        handler.addParameters(updateIndexCommand.getCommand());
         handler.addRelativeFiles(rootToFilesPair.getValue());
 
         return handler;

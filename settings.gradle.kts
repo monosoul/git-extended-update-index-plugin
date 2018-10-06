@@ -1,1 +1,1 @@
-rootProject.name = "git-skip-worktree-plugin"
+rootProject.name = "git-extended-update-index-plugin"

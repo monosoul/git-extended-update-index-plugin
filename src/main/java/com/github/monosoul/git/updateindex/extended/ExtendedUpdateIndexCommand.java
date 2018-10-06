@@ -1,13 +1,13 @@
-package com.github.monosoul.gitskipworktree;
+package com.github.monosoul.git.updateindex.extended;
 
-enum SkipWorkTreeCommand {
+enum ExtendedUpdateIndexCommand {
 
     SKIP_WORKTREE("--skip-worktree"),
     NO_SKIP_WORKTREE("--no-skip-worktree");
 
     private final String command;
 
-    SkipWorkTreeCommand(final String command) {
+    ExtendedUpdateIndexCommand(final String command) {
         this.command = command;
     }
 

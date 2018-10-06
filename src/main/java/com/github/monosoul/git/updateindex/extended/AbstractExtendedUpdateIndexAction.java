@@ -1,4 +1,4 @@
-package com.github.monosoul.gitskipworktree;
+package com.github.monosoul.git.updateindex.extended;
 
 import static com.intellij.vcsUtil.VcsUtil.getVcsRootFor;
 import static java.util.stream.Collectors.groupingBy;
@@ -21,9 +21,9 @@ import lombok.val;
 import org.jetbrains.annotations.NotNull;
 
 @Slf4j
-abstract class AbstractWorkTreeAction extends AbstractVcsAction {
+abstract class AbstractExtendedUpdateIndexAction extends AbstractVcsAction {
 
-    protected abstract SkipWorkTreeCommand skipWorkTreeCommand();
+    protected abstract ExtendedUpdateIndexCommand updateIndexCommand();
 
     @Override
     protected final void update(@NotNull final VcsContext vcsContext, @NotNull final Presentation presentation) {
@@ -59,6 +59,6 @@ abstract class AbstractWorkTreeAction extends AbstractVcsAction {
     }
 
     Function<Entry<VirtualFile, List<VirtualFile>>, GitLineHandler> gitLineHandlerCreator(@NotNull final Project project) {
-        return new GitLineHandlerCreator(project, skipWorkTreeCommand());
+        return new GitLineHandlerCreator(project, updateIndexCommand());
     }
 }

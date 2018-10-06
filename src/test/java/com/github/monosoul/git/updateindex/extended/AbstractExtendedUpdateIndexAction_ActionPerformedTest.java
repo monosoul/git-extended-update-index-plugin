@@ -1,6 +1,6 @@
-package com.github.monosoul.gitskipworktree;
+package com.github.monosoul.git.updateindex.extended;
 
-import static com.github.monosoul.gitskipworktree.Util.getRandomSkipWorkTreeCommand;
+import static com.github.monosoul.git.updateindex.extended.Util.getRandomSkipWorkTreeCommand;
 import static com.intellij.openapi.application.ApplicationManager.setApplication;
 import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
@@ -46,7 +46,7 @@ import org.mockito.Mock;
 import org.mockito.stubbing.Answer;
 import org.picocontainer.MutablePicoContainer;
 
-class AbstractWorkTreeAction_ActionPerformedTest {
+class AbstractExtendedUpdateIndexAction_ActionPerformedTest {
 
     private static final int LIMIT = 10;
 
@@ -92,7 +92,7 @@ class AbstractWorkTreeAction_ActionPerformedTest {
 
     @ParameterizedTest
     @MethodSource("skipWorkTreeCommandStream")
-    void doNotPerformActionIfProjectIsNull(final SkipWorkTreeCommand command) {
+    void doNotPerformActionIfProjectIsNull(final ExtendedUpdateIndexCommand command) {
         when(vcsContext.getProject()).thenReturn(null);
 
         abstractWorkTreeAction(command).actionPerformed(vcsContext);
@@ -104,7 +104,7 @@ class AbstractWorkTreeAction_ActionPerformedTest {
 
     @ParameterizedTest
     @MethodSource("skipWorkTreeCommandStream")
-    void doNothingIfNoRootForFile(final SkipWorkTreeCommand command) {
+    void doNothingIfNoRootForFile(final ExtendedUpdateIndexCommand command) {
         val file = mock(VirtualFile.class);
 
         when(vcsContext.getSelectedFilesStream()).then((Answer<Stream<VirtualFile>>) i -> Stream.of(file));
@@ -122,7 +122,7 @@ class AbstractWorkTreeAction_ActionPerformedTest {
 
     @ParameterizedTest
     @MethodSource("virtualFileListAndCommandStream")
-    void executeGitCommandAndLogNothingIfSuccessful(final List<VirtualFile> files, final SkipWorkTreeCommand command) {
+    void executeGitCommandAndLogNothingIfSuccessful(final List<VirtualFile> files, final ExtendedUpdateIndexCommand command) {
         val root = mock(VirtualFile.class);
 
         when(vcsContext.getSelectedFilesStream()).then((Answer<Stream<VirtualFile>>) i -> files.stream());
@@ -142,7 +142,7 @@ class AbstractWorkTreeAction_ActionPerformedTest {
 
     @ParameterizedTest
     @MethodSource("virtualFileListAndCommandStream")
-    void executeGitCommandAndLogErrorIfNotSuccessful(final List<VirtualFile> files, final SkipWorkTreeCommand command) {
+    void executeGitCommandAndLogErrorIfNotSuccessful(final List<VirtualFile> files, final ExtendedUpdateIndexCommand command) {
         val root = mock(VirtualFile.class);
         val captor = ArgumentCaptor.forClass(LoggingEvent.class);
         val appender = configureAppender();
@@ -170,15 +170,15 @@ class AbstractWorkTreeAction_ActionPerformedTest {
 
     private Appender configureAppender() {
         val appender = mock(Appender.class);
-        val logger = Logger.getLogger(AbstractWorkTreeAction.class);
+        val logger = Logger.getLogger(AbstractExtendedUpdateIndexAction.class);
         logger.addAppender(appender);
         logger.setLevel(DEBUG);
 
         return appender;
     }
 
-    private AbstractWorkTreeAction abstractWorkTreeAction(final SkipWorkTreeCommand command) {
-        val abstractWorkTreeAction = spy(new TestAbstractWorkTreeActionImpl(command));
+    private AbstractExtendedUpdateIndexAction abstractWorkTreeAction(final ExtendedUpdateIndexCommand command) {
+        val abstractWorkTreeAction = spy(new TestAbstractExtendedUpdateIndexActionImpl(command));
         doReturn(gitLineHandlerCreator).when(abstractWorkTreeAction).gitLineHandlerCreator(project);
 
         return abstractWorkTreeAction;
@@ -197,7 +197,7 @@ class AbstractWorkTreeAction_ActionPerformedTest {
         return generate(() -> mock(VirtualFile.class)).limit(LIMIT);
     }
 
-    private static Stream<SkipWorkTreeCommand> skipWorkTreeCommandStream() {
+    private static Stream<ExtendedUpdateIndexCommand> skipWorkTreeCommandStream() {
         return generate(Util::getRandomSkipWorkTreeCommand).limit(LIMIT);
     }
 }

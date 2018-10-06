@@ -1,4 +1,4 @@
-package com.github.monosoul.gitskipworktree;
+package com.github.monosoul.git.updateindex.extended;
 
 import static com.intellij.openapi.application.ApplicationManager.setApplication;
 import static java.util.stream.Collectors.joining;
@@ -49,7 +49,7 @@ class GitLineHandlerCreatorTest {
     @Mock
     private Project project;
     @Mock
-    private SkipWorkTreeCommand skipWorkTreeCommand;
+    private ExtendedUpdateIndexCommand updateIndexCommand;
 
     @BeforeEach
     void setUp() {
@@ -75,9 +75,9 @@ class GitLineHandlerCreatorTest {
     void apply(final Entry<VirtualFile, List<VirtualFile>> entry) {
         val skipWorkTreeCommandString = randomAlphabetic(LIMIT);
 
-        when(skipWorkTreeCommand.getCommand()).thenReturn(skipWorkTreeCommandString);
+        when(updateIndexCommand.getCommand()).thenReturn(skipWorkTreeCommandString);
 
-        val handler = new GitLineHandlerCreator(project, skipWorkTreeCommand).apply(entry);
+        val handler = new GitLineHandlerCreator(project, updateIndexCommand).apply(entry);
         val expected = buildExpected(skipWorkTreeCommandString, entry.getValue());
 
         assertThat(handler.printableCommandLine()).isEqualTo(expected);

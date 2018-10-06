@@ -1,8 +1,10 @@
 <idea-plugin>
-    <id>org.jetbrains</id>
-    <name>my_plugin</name>
+    <id>git-extended-update-index-plugin</id>
+    <name>Git extended update-index plugin</name>
     <version>0.0.1</version>
-    <vendor email="dummy" url="dummy">dummy</vendor>
+    <vendor email="kloz.klaud@gmail.com" url="https://github.com/monosoul/intellij-git-skip-worktree">
+        Andrei Nevedomskii
+    </vendor>
 
     <description><![CDATA[
       Sample plugin.<br>
@@ -27,12 +29,14 @@
     </extensions>
 
     <actions>
-        <group id="SkipWorkTree.ContextMenu">
+        <group id="monosoul.Git.UpdateIndex.Extended.ContextMenu">
             <separator/>
-            <action id="SkipWorkTree.Skip" class="com.github.monosoul.gitskipworktree.SkipWorkTreeAction"
+            <action id="monosoul.Git.UpdateIndex.Extended.WorkTree.Skip"
+                    class="com.github.monosoul.git.updateindex.extended.SkipWorkTreeAction"
                     text="Skip worktree"
                     description="Enable skip worktree for the file"/>
-            <action id="SkipWorkTree.NoSkip" class="com.github.monosoul.gitskipworktree.NoSkipWorkTreeAction"
+            <action id="monosoul.Git.UpdateIndex.Extended.WorkTree.NoSkip"
+                    class="com.github.monosoul.git.updateindex.extended.NoSkipWorkTreeAction"
                     text="No skip worktree"
                     description="Disable skip worktree for the file"/>
             <add-to-group group-id="Git.ContextMenu" anchor="last"/>
