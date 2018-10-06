@@ -5,6 +5,7 @@ import static git4idea.commands.GitCommand.UPDATE_INDEX;
 import static java.util.stream.Collectors.groupingBy;
 import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vcs.ProjectLevelVcsManager;
 import com.intellij.openapi.vcs.actions.AbstractVcsAction;
 import com.intellij.openapi.vcs.actions.VcsContext;
 import com.intellij.openapi.vcs.changes.VcsDirtyScopeManager;
@@ -25,7 +26,15 @@ abstract class AbstractWorkTreeAction extends AbstractVcsAction {
 
     @Override
     protected void update(@NotNull final VcsContext vcsContext, @NotNull final Presentation presentation) {
+        val project = vcsContext.getProject();
 
+        if (project == null || !ProjectLevelVcsManager.getInstance(project).hasActiveVcss()) {
+            presentation.setEnabledAndVisible(false);
+            return;
+        }
+
+        presentation.setEnabled(!ProjectLevelVcsManager.getInstance(project).isBackgroundVcsOperationRunning());
+        presentation.setVisible(true);
     }
 
     @Override
@@ -37,6 +46,7 @@ abstract class AbstractWorkTreeAction extends AbstractVcsAction {
 
         val map = e.getSelectedFilesStream().collect(groupingBy(file -> getVcsRootFor(project, file)));
         map.entrySet().stream()
+           .filter(entry -> entry.getKey() != null)
            .map(new GitLineHandlerCreator(project, skipWorkTreeCommand()))
            .map(Git.getInstance()::runCommand)
            .filter(r -> !r.success())
