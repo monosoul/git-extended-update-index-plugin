@@ -33,6 +33,7 @@ import org.picocontainer.PicoContainer;
 class GitLineHandlerCreatorTest {
 
     private static final int LIMIT = 10;
+    private static GitVersion CAN_NOT_OVERRIDE_GIT_CONFIG_FOR_COMMAND = new GitVersion(1, 7, 1, 0);
 
     @Mock
     private Application application;
@@ -66,7 +67,7 @@ class GitLineHandlerCreatorTest {
                 .when(project).getComponent(ProjectLevelVcsManager.class);
         doReturn(gitVcs)
                 .when(vcsManager).findVcsByName(GitVcs.NAME);
-        doReturn(GitVersion.MIN)
+        doReturn(CAN_NOT_OVERRIDE_GIT_CONFIG_FOR_COMMAND)
                 .when(gitVcs).getVersion();
     }
 
@@ -80,6 +81,7 @@ class GitLineHandlerCreatorTest {
         val handler = new GitLineHandlerCreator(project, updateIndexCommand).apply(entry);
         val expected = buildExpected(skipWorkTreeCommandString, entry.getValue());
 
+        System.out.println(handler.printableCommandLine());
         assertThat(handler.printableCommandLine()).isEqualTo(expected);
     }
 
