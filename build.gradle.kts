@@ -11,7 +11,7 @@ java {
     targetCompatibility = JavaVersion.VERSION_1_8
 }
 
-val ideaVersion = "182.4892.2"
+val ideaVersion = "181.4203.550"
 intellij {
     version = System.getenv().getOrDefault("IDEA_VERSION", ideaVersion)
     pluginName = "Git extended update-index plugin"

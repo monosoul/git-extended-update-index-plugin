@@ -22,7 +22,7 @@
     ]]>
     </change-notes>
 
-    <idea-version since-build="182"/>
+    <idea-version since-build="181"/>
     <depends>Git4Idea</depends>
 
     <extensions defaultExtensionNs="com.intellij">
