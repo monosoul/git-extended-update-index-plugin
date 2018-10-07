@@ -11,10 +11,10 @@ java {
     targetCompatibility = JavaVersion.VERSION_1_8
 }
 
-val ideaVersion = "181.4203.550"
 intellij {
-    version = System.getenv().getOrDefault("IDEA_VERSION", ideaVersion)
     pluginName = "Git extended update-index plugin"
+    updateSinceUntilBuild = false
+    sameSinceUntilBuild = true
     setPlugins("git4idea")
 }
 
