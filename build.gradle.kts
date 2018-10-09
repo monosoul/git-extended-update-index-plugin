@@ -12,7 +12,7 @@ java {
 }
 
 intellij {
-    pluginName = "Git extended update-index plugin"
+    pluginName = "Git extended update-index"
     updateSinceUntilBuild = false
     sameSinceUntilBuild = true
     setPlugins("git4idea")

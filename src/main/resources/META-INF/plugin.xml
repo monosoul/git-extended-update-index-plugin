@@ -1,6 +1,6 @@
 <idea-plugin>
-    <id>git-extended-update-index-plugin</id>
-    <name>Git extended update-index plugin</name>
+    <id>git-extended-update-index</id>
+    <name>Git extended update-index</name>
     <version>0.0.1</version>
     <vendor email="kloz.klaud@gmail.com" url="https://github.com/monosoul/git-extended-update-index-plugin">
         Andrei Nevedomskii
