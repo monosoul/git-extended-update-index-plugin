@@ -27,11 +27,11 @@ dependencies {
     testCompileOnly(lombokDependency)
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
-    testCompile("org.junit.jupiter:junit-jupiter-params:$junitVersion")
-    testRuntime("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:$junitVersion")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
 
-    testCompile("org.assertj:assertj-core:3.11.1")
-    testCompile("org.mockito:mockito-core:2.23.0")
+    testImplementation("org.assertj:assertj-core:3.11.1")
+    testImplementation("org.mockito:mockito-core:2.23.0")
 }
 
 tasks {
