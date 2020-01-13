@@ -23,6 +23,7 @@ dependencies {
     val junitVersion  = "5.3.1"
 
     annotationProcessor(lombokDependency)
+    testAnnotationProcessor(lombokDependency)
     compileOnly(lombokDependency)
     testCompileOnly(lombokDependency)
 
