@@ -35,17 +35,19 @@ dependencies {
 }
 
 tasks {
-    "jacocoTestReport"(JacocoReport::class) {
+    val jacocoTestReport = "jacocoTestReport"(JacocoReport::class) {
         reports {
             xml.isEnabled = true
             html.isEnabled = false
         }
-
-        val check by tasks
-        check.dependsOn(this)
     }
+
     "test"(Test::class) {
         useJUnitPlatform()
+    }
+
+    "check" {
+        dependsOn(jacocoTestReport)
     }
 }
 
