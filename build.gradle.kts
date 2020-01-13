@@ -2,7 +2,7 @@ group = "com.github.monosoul"
 version = "0.0.1"
 
 plugins {
-    id("org.jetbrains.intellij") version "0.3.11"
+    id("org.jetbrains.intellij") version "0.4.15"
     jacoco
 }
 
