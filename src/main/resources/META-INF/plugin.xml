@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>git-extended-update-index</id>
     <name>Git extended update-index</name>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <vendor email="kloz.klaud@gmail.com" url="https://github.com/monosoul/git-extended-update-index-plugin">
         Andrei Nevedomskii
     </vendor>
@@ -19,6 +19,7 @@
 
     <change-notes><![CDATA[
       Release 0.0.1: Initial release.<br>
+      Release 0.0.2: Update dependencies to make the plugin available on all platforms.<br>
     ]]>
     </change-notes>
 
