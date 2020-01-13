@@ -32,6 +32,7 @@ dependencies {
 
     testImplementation("org.assertj:assertj-core:3.11.1")
     testImplementation("org.mockito:mockito-core:2.23.0")
+    testImplementation("org.apache.commons:commons-lang3:3.9")
 }
 
 tasks {
