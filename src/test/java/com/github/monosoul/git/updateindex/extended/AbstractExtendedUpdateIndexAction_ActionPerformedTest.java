@@ -19,7 +19,8 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
-import com.intellij.mock.MockApplicationEx;
+
+import com.intellij.mock.MockApplication;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vcs.ProjectLevelVcsManager;
@@ -44,17 +45,14 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.stubbing.Answer;
-import org.picocontainer.MutablePicoContainer;
 
 class AbstractExtendedUpdateIndexAction_ActionPerformedTest {
 
     private static final int LIMIT = 10;
 
-    private MockApplicationEx application;
+    private MockApplication application;
     @Mock
     private Disposable parent;
-    @Mock
-    private MutablePicoContainer picoContainer;
     @Mock
     private Git git;
     @Mock
@@ -76,15 +74,16 @@ class AbstractExtendedUpdateIndexAction_ActionPerformedTest {
     @BeforeEach
     void setUp() {
         initMocks(this);
-        application = spy(new MockApplicationEx(parent));
+        application = new MockApplication(parent);
         setApplication(application, parent);
 
-        doReturn(picoContainer).when(application).getPicoContainer();
-        doReturn(git).when(picoContainer).getComponentInstance(Git.class.getName());
+        application.registerService(Git.class, git, parent);
 
         doReturn(project).when(vcsContext).getProject();
         doReturn(vcsManager).when(project).getComponent(ProjectLevelVcsManager.class);
+        doReturn(vcsManager).when(project).getService(ProjectLevelVcsManager.class);
         doReturn(dirtyScopeManager).when(project).getComponent(VcsDirtyScopeManager.class);
+        doReturn(dirtyScopeManager).when(project).getService(VcsDirtyScopeManager.class);
 
         doReturn(gitLineHandler).when(gitLineHandlerCreator).apply(any(Entry.class));
         doReturn(gitCommandResult).when(git).runCommand(gitLineHandler);

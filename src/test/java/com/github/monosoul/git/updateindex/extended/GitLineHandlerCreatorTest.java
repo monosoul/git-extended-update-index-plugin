@@ -11,9 +11,10 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
+
+import com.intellij.mock.MockApplication;
 import com.intellij.mock.MockVirtualFile;
 import com.intellij.openapi.Disposable;
-import com.intellij.openapi.application.Application;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vcs.ProjectLevelVcsManager;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -28,19 +29,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
-import org.picocontainer.PicoContainer;
 
 class GitLineHandlerCreatorTest {
 
     private static final int LIMIT = 10;
     private static GitVersion CAN_NOT_OVERRIDE_GIT_CONFIG_FOR_COMMAND = new GitVersion(1, 7, 1, 0);
 
-    @Mock
-    private Application application;
+    private MockApplication application;
     @Mock
     private Disposable parent;
-    @Mock
-    private PicoContainer picoContainer;
     @Mock
     private GitExecutableManager gitExecutableManager;
     @Mock
@@ -55,16 +52,17 @@ class GitLineHandlerCreatorTest {
     @BeforeEach
     void setUp() {
         initMocks(this);
+        application = new MockApplication(parent);
         setApplication(application, parent);
 
-        doReturn(picoContainer)
-                .when(application).getPicoContainer();
-        doReturn(gitExecutableManager)
-                .when(picoContainer).getComponentInstance(GitExecutableManager.class.getName());
+        application.registerService(GitExecutableManager.class, gitExecutableManager, parent);
+
         doReturn(randomAlphabetic(LIMIT))
                 .when(gitExecutableManager).getPathToGit(project);
         doReturn(vcsManager)
                 .when(project).getComponent(ProjectLevelVcsManager.class);
+        doReturn(vcsManager)
+                .when(project).getService(ProjectLevelVcsManager.class);
         doReturn(gitVcs)
                 .when(vcsManager).findVcsByName(GitVcs.NAME);
         doReturn(CAN_NOT_OVERRIDE_GIT_CONFIG_FOR_COMMAND)

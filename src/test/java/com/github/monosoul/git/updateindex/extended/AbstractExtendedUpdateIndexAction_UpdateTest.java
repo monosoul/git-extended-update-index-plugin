@@ -35,6 +35,7 @@ class AbstractExtendedUpdateIndexAction_UpdateTest {
 
         doReturn(project).when(vcsContext).getProject();
         doReturn(vcsManager).when(project).getComponent(ProjectLevelVcsManager.class);
+        doReturn(vcsManager).when(project).getService(ProjectLevelVcsManager.class);
         doReturn(true).when(vcsManager).hasActiveVcss();
     }
 
