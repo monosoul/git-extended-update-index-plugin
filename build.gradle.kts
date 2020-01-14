@@ -23,7 +23,7 @@ intellij {
 
 dependencies {
     val lombokDependency = "org.projectlombok:lombok:1.18.2"
-    val junitVersion  = "5.3.1"
+    val junitVersion  = "5.5.2"
 
     annotationProcessor(lombokDependency)
     testAnnotationProcessor(lombokDependency)
