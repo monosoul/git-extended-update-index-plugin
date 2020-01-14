@@ -1,16 +1,20 @@
 package com.github.monosoul.git.updateindex.extended;
 
+import static com.intellij.openapi.util.Disposer.dispose;
 import static java.util.stream.Stream.generate;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
+
+import com.intellij.mock.MockProject;
 import com.intellij.openapi.actionSystem.Presentation;
-import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vcs.ProjectLevelVcsManager;
 import com.intellij.openapi.vcs.actions.VcsContext;
 import java.util.stream.Stream;
+
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -20,12 +24,13 @@ class AbstractExtendedUpdateIndexAction_UpdateTest {
 
     private static final int LIMIT = 10;
 
+    private TestDisposable parent;
+    private MockProject project;
+
     @Mock
     private VcsContext vcsContext;
     @Mock
     private Presentation presentation;
-    @Mock
-    private Project project;
     @Mock
     private ProjectLevelVcsManager vcsManager;
 
@@ -33,10 +38,18 @@ class AbstractExtendedUpdateIndexAction_UpdateTest {
     void setUp() {
         initMocks(this);
 
+        parent = new TestDisposable();
+        project = new MockProject(null, parent);
+
+        project.registerService(ProjectLevelVcsManager.class, vcsManager);
         doReturn(project).when(vcsContext).getProject();
-        doReturn(vcsManager).when(project).getComponent(ProjectLevelVcsManager.class);
-        doReturn(vcsManager).when(project).getService(ProjectLevelVcsManager.class);
+
         doReturn(true).when(vcsManager).hasActiveVcss();
+    }
+
+    @AfterEach
+    void tearDown() {
+        dispose(parent);
     }
 
     @ParameterizedTest

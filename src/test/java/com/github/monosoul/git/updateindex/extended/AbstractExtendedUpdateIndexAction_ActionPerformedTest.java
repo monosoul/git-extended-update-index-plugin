@@ -2,6 +2,7 @@ package com.github.monosoul.git.updateindex.extended;
 
 import static com.github.monosoul.git.updateindex.extended.Util.getRandomSkipWorkTreeCommand;
 import static com.intellij.openapi.application.ApplicationManager.setApplication;
+import static com.intellij.openapi.util.Disposer.dispose;
 import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Stream.generate;
@@ -21,8 +22,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 import com.intellij.mock.MockApplication;
-import com.intellij.openapi.Disposable;
-import com.intellij.openapi.project.Project;
+import com.intellij.mock.MockProject;
 import com.intellij.openapi.vcs.ProjectLevelVcsManager;
 import com.intellij.openapi.vcs.actions.VcsContext;
 import com.intellij.openapi.vcs.changes.VcsDirtyScopeManager;
@@ -38,6 +38,7 @@ import lombok.val;
 import org.apache.log4j.Appender;
 import org.apache.log4j.Logger;
 import org.apache.log4j.spi.LoggingEvent;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -50,15 +51,14 @@ class AbstractExtendedUpdateIndexAction_ActionPerformedTest {
 
     private static final int LIMIT = 10;
 
+    private TestDisposable parent;
     private MockApplication application;
-    @Mock
-    private Disposable parent;
+    private MockProject project;
+
     @Mock
     private Git git;
     @Mock
     private VcsContext vcsContext;
-    @Mock
-    private Project project;
     @Mock
     private ProjectLevelVcsManager vcsManager;
     @Mock
@@ -74,19 +74,25 @@ class AbstractExtendedUpdateIndexAction_ActionPerformedTest {
     @BeforeEach
     void setUp() {
         initMocks(this);
+        parent = new TestDisposable();
+
         application = new MockApplication(parent);
         setApplication(application, parent);
-
         application.registerService(Git.class, git, parent);
 
+        project = new MockProject(null, parent);
+
+        project.registerService(ProjectLevelVcsManager.class, vcsManager);
+        project.registerService(VcsDirtyScopeManager.class, dirtyScopeManager);
         doReturn(project).when(vcsContext).getProject();
-        doReturn(vcsManager).when(project).getComponent(ProjectLevelVcsManager.class);
-        doReturn(vcsManager).when(project).getService(ProjectLevelVcsManager.class);
-        doReturn(dirtyScopeManager).when(project).getComponent(VcsDirtyScopeManager.class);
-        doReturn(dirtyScopeManager).when(project).getService(VcsDirtyScopeManager.class);
 
         doReturn(gitLineHandler).when(gitLineHandlerCreator).apply(any(Entry.class));
         doReturn(gitCommandResult).when(git).runCommand(gitLineHandler);
+    }
+
+    @AfterEach
+    void tearDown() {
+        dispose(parent);
     }
 
     @ParameterizedTest
