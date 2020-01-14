@@ -1,3 +1,6 @@
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+import org.gradle.api.tasks.testing.logging.TestLogEvent.*
+
 group = "com.github.monosoul"
 version = "0.0.2"
 
@@ -46,6 +49,11 @@ tasks {
 
     "test"(Test::class) {
         useJUnitPlatform()
+
+        testLogging {
+            events = setOf(PASSED, SKIPPED, FAILED)
+            exceptionFormat = FULL
+        }
     }
 
     "check" {
