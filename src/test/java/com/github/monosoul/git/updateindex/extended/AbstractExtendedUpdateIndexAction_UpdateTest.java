@@ -54,7 +54,9 @@ class AbstractExtendedUpdateIndexAction_UpdateTest {
 
     @ParameterizedTest
     @MethodSource("skipWorkTreeCommandStream")
-    void shouldMakeDisabledAndInvisibleWhenProjectIsNull(final ExtendedUpdateIndexCommand command) {
+    void should_make_the_menu_item_invisible_and_disabled_when_the_project_is_null(
+            final ExtendedUpdateIndexCommand command
+    ) {
         when(vcsContext.getProject()).thenReturn(null);
 
         abstractWorkTreeAction(command).update(vcsContext, presentation);
@@ -65,7 +67,9 @@ class AbstractExtendedUpdateIndexAction_UpdateTest {
 
     @ParameterizedTest
     @MethodSource("skipWorkTreeCommandStream")
-    void shouldMakeDisabledAndInvisibleWhenDoesNotHaveActiveVcss(final ExtendedUpdateIndexCommand command) {
+    void should_make_the_menu_item_invisible_and_disabled_when_the_project_does_not_have_an_active_vcs(
+            final ExtendedUpdateIndexCommand command
+    ) {
         when(vcsManager.hasActiveVcss()).thenReturn(false);
 
         abstractWorkTreeAction(command).update(vcsContext, presentation);
@@ -76,7 +80,9 @@ class AbstractExtendedUpdateIndexAction_UpdateTest {
 
     @ParameterizedTest
     @MethodSource("skipWorkTreeCommandStream")
-    void shouldMakeDisabledAndVisibleWhenBackgroundVcsOperationIsRunning(final ExtendedUpdateIndexCommand command) {
+    void should_make_the_menu_item_visible_and_disabled_when_a_background_operation_is_running(
+            final ExtendedUpdateIndexCommand command
+    ) {
         when(vcsManager.isBackgroundVcsOperationRunning()).thenReturn(true);
 
         abstractWorkTreeAction(command).update(vcsContext, presentation);
@@ -88,7 +94,7 @@ class AbstractExtendedUpdateIndexAction_UpdateTest {
 
     @ParameterizedTest
     @MethodSource("skipWorkTreeCommandStream")
-    void shouldMakeEnabledAndVisible(final ExtendedUpdateIndexCommand command) {
+    void should_make_the_menu_item_visible_and_enabled(final ExtendedUpdateIndexCommand command) {
         when(vcsManager.isBackgroundVcsOperationRunning()).thenReturn(false);
 
         abstractWorkTreeAction(command).update(vcsContext, presentation);

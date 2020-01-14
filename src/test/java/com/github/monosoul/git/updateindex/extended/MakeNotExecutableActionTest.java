@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 class MakeNotExecutableActionTest {
 
     @Test
-    void updateIndexCommand() {
+    void should_have_make_not_executable_update_index_command() {
         assertThat(new MakeNotExecutableAction().updateIndexCommand()).isEqualByComparingTo(MAKE_NOT_EXECUTABLE);
     }
 }

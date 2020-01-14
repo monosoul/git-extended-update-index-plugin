@@ -72,7 +72,7 @@ class GitLineHandlerCreatorTest {
     }
 
     @RepeatedTest(LIMIT)
-    void apply() {
+    void should_create_a_GitLineHandler_out_of_root_folder_to_files_list_pair() {
         val entry = fileEntry();
 
         val skipWorkTreeCommandString = randomAlphabetic(LIMIT);

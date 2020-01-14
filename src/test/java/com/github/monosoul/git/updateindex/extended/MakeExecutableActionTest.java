@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 class MakeExecutableActionTest {
 
     @Test
-    void updateIndexCommand() {
+    void should_have_make_executable_update_index_command() {
         assertThat(new MakeExecutableAction().updateIndexCommand()).isEqualByComparingTo(MAKE_EXECUTABLE);
     }
 }

@@ -97,7 +97,7 @@ class AbstractExtendedUpdateIndexAction_ActionPerformedTest {
 
     @ParameterizedTest
     @MethodSource("skipWorkTreeCommandStream")
-    void doNotPerformActionIfProjectIsNull(final ExtendedUpdateIndexCommand command) {
+    void should_not_perform_the_command_action_if_the_project_is_null(final ExtendedUpdateIndexCommand command) {
         when(vcsContext.getProject()).thenReturn(null);
 
         abstractWorkTreeAction(command).actionPerformed(vcsContext);
@@ -109,7 +109,7 @@ class AbstractExtendedUpdateIndexAction_ActionPerformedTest {
 
     @ParameterizedTest
     @MethodSource("skipWorkTreeCommandStream")
-    void doNothingIfNoRootForFile(final ExtendedUpdateIndexCommand command) {
+    void should_do_nothing_if_the_file_has_not_root(final ExtendedUpdateIndexCommand command) {
         val file = mock(VirtualFile.class);
 
         when(vcsContext.getSelectedFilesStream()).then((Answer<Stream<VirtualFile>>) i -> Stream.of(file));
@@ -127,7 +127,10 @@ class AbstractExtendedUpdateIndexAction_ActionPerformedTest {
 
     @ParameterizedTest
     @MethodSource("virtualFileListAndCommandStream")
-    void executeGitCommandAndLogNothingIfSuccessful(final List<VirtualFile> files, final ExtendedUpdateIndexCommand command) {
+    void should_execute_the_git_command_and_log_nothing_if_it_was_successfull(
+            final List<VirtualFile> files,
+            final ExtendedUpdateIndexCommand command
+    ) {
         val root = mock(VirtualFile.class);
 
         when(vcsContext.getSelectedFilesStream()).then((Answer<Stream<VirtualFile>>) i -> files.stream());
@@ -147,7 +150,10 @@ class AbstractExtendedUpdateIndexAction_ActionPerformedTest {
 
     @ParameterizedTest
     @MethodSource("virtualFileListAndCommandStream")
-    void executeGitCommandAndLogErrorIfNotSuccessful(final List<VirtualFile> files, final ExtendedUpdateIndexCommand command) {
+    void should_execute_the_git_command_and_log_the_error_if_it_was_unsuccessful(
+            final List<VirtualFile> files,
+            final ExtendedUpdateIndexCommand command
+    ) {
         val root = mock(VirtualFile.class);
         val captor = ArgumentCaptor.forClass(LoggingEvent.class);
         val appender = configureAppender();

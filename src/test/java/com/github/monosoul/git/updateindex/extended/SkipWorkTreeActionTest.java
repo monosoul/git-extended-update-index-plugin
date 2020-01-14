@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 class SkipWorkTreeActionTest {
 
     @Test
-    void skipWorkTreeCommand() {
+    void should_have_skip_worktree_update_index_command() {
         assertThat(new SkipWorkTreeAction().updateIndexCommand()).isEqualByComparingTo(SKIP_WORKTREE);
     }
 }
