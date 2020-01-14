@@ -27,8 +27,7 @@ import java.util.stream.Stream;
 import lombok.val;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.api.RepeatedTest;
 import org.mockito.Mock;
 
 class GitLineHandlerCreatorTest {
@@ -72,9 +71,10 @@ class GitLineHandlerCreatorTest {
         dispose(parent);
     }
 
-    @ParameterizedTest
-    @MethodSource("entryStream")
-    void apply(final Entry<VirtualFile, List<VirtualFile>> entry) {
+    @RepeatedTest(LIMIT)
+    void apply() {
+        val entry = fileEntry();
+
         val skipWorkTreeCommandString = randomAlphabetic(LIMIT);
 
         when(updateIndexCommand.getCommand()).thenReturn(skipWorkTreeCommandString);
@@ -91,21 +91,19 @@ class GitLineHandlerCreatorTest {
     }
 
     @SuppressWarnings("unchecked")
-    private static Stream<Entry<VirtualFile, List<VirtualFile>>> entryStream() {
-        return generate(() -> {
-            val root = new MockVirtualFile(true, randomAlphabetic(LIMIT));
-            val files = mockVirtualFileStream().map(f -> {
-                f.setParent(root);
-                return (VirtualFile) f;
-            }).collect(toList());
+    private static Entry<VirtualFile, List<VirtualFile>> fileEntry() {
+        val root = new MockVirtualFile(true, randomAlphabetic(LIMIT));
+        val files = mockVirtualFileStream().map(f -> {
+            f.setParent(root);
+            return (VirtualFile) f;
+        }).collect(toList());
 
-            val entry = (Entry<VirtualFile, List<VirtualFile>>) mock(Entry.class);
+        val entry = (Entry<VirtualFile, List<VirtualFile>>) mock(Entry.class);
 
-            when(entry.getKey()).thenReturn(root);
-            when(entry.getValue()).thenReturn(files);
+        when(entry.getKey()).thenReturn(root);
+        when(entry.getValue()).thenReturn(files);
 
-            return entry;
-        }).limit(LIMIT);
+        return entry;
     }
 
     private static Stream<MockVirtualFile> mockVirtualFileStream() {
