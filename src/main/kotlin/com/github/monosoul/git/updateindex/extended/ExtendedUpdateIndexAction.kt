@@ -17,9 +17,9 @@ import git4idea.commands.GitCommandResult
 import org.slf4j.LoggerFactory
 import kotlin.collections.Map.Entry
 
-sealed class AbstractExtendedUpdateIndexAction(private val command: ExtendedUpdateIndexCommand) : AbstractVcsAction() {
+sealed class ExtendedUpdateIndexAction(private val command: ExtendedUpdateIndexCommand) : AbstractVcsAction() {
 
-    private val logger = LoggerFactory.getLogger(AbstractExtendedUpdateIndexAction::class.java)
+    private val logger = javaClass.let(LoggerFactory::getLogger)
 
     override fun update(context: VcsContext, presentation: Presentation) {
         val vcsManager = context.project?.let(ProjectLevelVcsManager::getInstance)
@@ -62,10 +62,10 @@ sealed class AbstractExtendedUpdateIndexAction(private val command: ExtendedUpda
     private fun Project.fileToVcsRoot(file: VirtualFile) = getVcsRootFor(this, file)?.let { file to it }
 }
 
-class MakeExecutableAction : AbstractExtendedUpdateIndexAction(MAKE_EXECUTABLE)
+class MakeExecutableAction : ExtendedUpdateIndexAction(MAKE_EXECUTABLE)
 
-class MakeNotExecutableAction : AbstractExtendedUpdateIndexAction(MAKE_NOT_EXECUTABLE)
+class MakeNotExecutableAction : ExtendedUpdateIndexAction(MAKE_NOT_EXECUTABLE)
 
-class NoSkipWorkTreeAction : AbstractExtendedUpdateIndexAction(NO_SKIP_WORKTREE)
+class NoSkipWorkTreeAction : ExtendedUpdateIndexAction(NO_SKIP_WORKTREE)
 
-class SkipWorkTreeAction : AbstractExtendedUpdateIndexAction(SKIP_WORKTREE)
+class SkipWorkTreeAction : ExtendedUpdateIndexAction(SKIP_WORKTREE)
