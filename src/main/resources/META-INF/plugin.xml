@@ -37,6 +37,16 @@
             <implementation-class>com.github.monosoul.git.updateindex.extended.GitLineHandlerFactoryImpl</implementation-class>
             <loadForDefaultProject/>
         </component>
+        <component>
+            <interface-class>com.github.monosoul.git.updateindex.extended.support.CommandInvoker</interface-class>
+            <implementation-class>com.github.monosoul.git.updateindex.extended.support.CommandInvokerImpl</implementation-class>
+            <loadForDefaultProject/>
+        </component>
+        <component>
+            <interface-class>com.github.monosoul.git.updateindex.extended.support.PresentationUpdater</interface-class>
+            <implementation-class>com.github.monosoul.git.updateindex.extended.support.PresentationUpdaterImpl</implementation-class>
+            <loadForDefaultProject/>
+        </component>
     </project-components>
 
     <actions>
