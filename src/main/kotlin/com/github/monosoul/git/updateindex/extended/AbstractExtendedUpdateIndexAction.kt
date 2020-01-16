@@ -13,6 +13,7 @@ import com.intellij.openapi.vcs.changes.VcsDirtyScopeManager
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.vcsUtil.VcsUtil.getVcsRootFor
 import git4idea.commands.Git
+import git4idea.commands.GitCommandResult
 import org.slf4j.LoggerFactory
 import kotlin.collections.Map.Entry
 
@@ -41,8 +42,8 @@ sealed class AbstractExtendedUpdateIndexAction(private val command: ExtendedUpda
                         .apply {
                             map { gitLineHandler(it) }
                                     .map(Git.getInstance()::runCommand)
-                                    .filterNot { it.success() }
-                                    .flatMap { it.errorOutput }
+                                    .filterNot(GitCommandResult::success)
+                                    .flatMap(GitCommandResult::getErrorOutput)
                                     .forEach(logger::error)
                         }
                         .values.flatten().forEach(vcsDirtyScopeManager::fileDirty)
