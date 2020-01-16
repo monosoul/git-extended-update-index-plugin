@@ -24,7 +24,7 @@ import java.util.stream.Collectors.toList
 import java.util.stream.Stream.generate
 import kotlin.collections.Map.Entry
 
-internal class GitLineHandlerCreatorImplSpec : BehaviorSpec() {
+internal class GitLineHandlerFactoryImplSpec : BehaviorSpec() {
 
     private companion object {
         const val LIMIT = 10
@@ -71,7 +71,7 @@ internal class GitLineHandlerCreatorImplSpec : BehaviorSpec() {
         generate { rootVcsToFileListEntry() }.limit(LIMIT.toLong()).forEach {
             given("VCS root to file list entry $it") {
                 `when`("invoke method is called") {
-                    val actual = GitLineHandlerCreatorImpl(project, updateIndexCommand).invoke(it)
+                    val actual = GitLineHandlerFactoryImpl(project).invoke(updateIndexCommand, it.key, it.value)
                     val expected = buildExpected(updateIndexCommand.command, it.value)
 
                     then("should build a proper command") {

@@ -31,6 +31,14 @@
     <extensions defaultExtensionNs="com.intellij">
     </extensions>
 
+    <project-components>
+        <component>
+            <interface-class>com.github.monosoul.git.updateindex.extended.GitLineHandlerFactory</interface-class>
+            <implementation-class>com.github.monosoul.git.updateindex.extended.GitLineHandlerFactoryImpl</implementation-class>
+            <loadForDefaultProject/>
+        </component>
+    </project-components>
+
     <actions>
         <group id="monosoul.Git.UpdateIndex.Extended.ContextMenu">
             <separator/>

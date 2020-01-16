@@ -14,6 +14,7 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.vcsUtil.VcsUtil.getVcsRootFor
 import git4idea.commands.Git
 import org.slf4j.LoggerFactory
+import kotlin.collections.Map.Entry
 
 sealed class AbstractExtendedUpdateIndexAction(private val command: ExtendedUpdateIndexCommand) : AbstractVcsAction() {
 
@@ -38,7 +39,7 @@ sealed class AbstractExtendedUpdateIndexAction(private val command: ExtendedUpda
                         .mapNotNull { fileToVcsRoot(it) }
                         .groupBy({ it.second }, { it.first })
                         .apply {
-                            map(gitLineHandlerCreator)
+                            map { gitLineHandler(it) }
                                     .map(Git.getInstance()::runCommand)
                                     .filterNot { it.success() }
                                     .flatMap { it.errorOutput }
@@ -49,8 +50,10 @@ sealed class AbstractExtendedUpdateIndexAction(private val command: ExtendedUpda
         }
     }
 
-    internal val Project.gitLineHandlerCreator: GitLineHandlerCreator
-        get() = GitLineHandlerCreatorImpl(this, command)
+    private fun Project.gitLineHandler(entry: Entry<VirtualFile, List<VirtualFile>>) =
+            entry.let { (vcsRoot, files) ->
+                getComponent(GitLineHandlerFactory::class.java).invoke(command, vcsRoot, files)
+            }
 
     private val Project.vcsDirtyScopeManager: VcsDirtyScopeManager
         get() = let(VcsDirtyScopeManager::getInstance)
