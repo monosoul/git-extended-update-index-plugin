@@ -10,24 +10,23 @@ import com.intellij.openapi.vfs.VirtualFile
 import git4idea.GitVcs
 import git4idea.config.GitExecutableManager
 import git4idea.config.GitVersion
-import io.kotlintest.TestCase
-import io.kotlintest.TestResult
-import io.kotlintest.shouldBe
-import io.kotlintest.specs.BehaviorSpec
-import io.mockk.MockKAnnotations.init
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
-import io.mockk.mockk
+import io.mockk.junit5.MockKExtension
 import org.apache.commons.lang3.RandomStringUtils.randomAlphabetic
 import org.apache.commons.lang3.RandomUtils.nextInt
-import java.util.stream.Collectors.toList
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.RepeatedTest
+import org.junit.jupiter.api.extension.ExtendWith
 import java.util.stream.Stream.generate
-import kotlin.collections.Map.Entry
+import kotlin.streams.toList
 
-internal class GitLineHandlerFactoryImplSpec : BehaviorSpec() {
+@ExtendWith(MockKExtension::class)
+internal class GitLineHandlerFactoryImplTest {
 
     private companion object {
-        const val LIMIT = 10
         val CAN_NOT_OVERRIDE_GIT_CONFIG_FOR_COMMAND = GitVersion(1, 7, 1, 0)
     }
 
@@ -43,9 +42,8 @@ internal class GitLineHandlerFactoryImplSpec : BehaviorSpec() {
     @MockK
     private lateinit var gitVcs: GitVcs
 
-    override fun beforeTest(testCase: TestCase) {
-        init(this, relaxUnitFun = true)
-
+    @BeforeEach
+    fun setUp() {
         parent = TestDisposable()
 
         application = MockApplication(parent)
@@ -55,7 +53,7 @@ internal class GitLineHandlerFactoryImplSpec : BehaviorSpec() {
         project = MockProject(null, parent)
         project.registerService(vcsManager, parent)
 
-        updateIndexCommand = enumValues<ExtendedUpdateIndexCommand>().random()
+        updateIndexCommand = randomEnum()
 
         every { gitVcs.version } returns CAN_NOT_OVERRIDE_GIT_CONFIG_FOR_COMMAND
         every { vcsManager.findVcsByName(GitVcs.NAME) } returns gitVcs
@@ -63,37 +61,29 @@ internal class GitLineHandlerFactoryImplSpec : BehaviorSpec() {
         every { gitExecutableManager.tryGetVersion(any()) } returns CAN_NOT_OVERRIDE_GIT_CONFIG_FOR_COMMAND
     }
 
-    override fun afterTest(testCase: TestCase, result: TestResult) {
+    @AfterEach
+    fun tearDown() {
         dispose(parent)
     }
 
-    init {
-        generate { rootVcsToFileListEntry() }.limit(LIMIT.toLong()).forEach {
-            given("VCS root to file list entry $it") {
-                `when`("invoke method is called") {
-                    val actual = GitLineHandlerFactoryImpl(project).invoke(updateIndexCommand, it.key, it.value)
-                    val expected = buildExpected(updateIndexCommand.command, it.value)
+    @RepeatedTest(LIMIT)
+    fun `should build a GitLineHandler with supplied command and files`() {
+        val (vcsRoot, files) = vcsRootToFileListPair()
 
-                    then("should build a proper command") {
-                        actual.printableCommandLine().shouldBe(expected)
-                    }
-                }
-            }
-        }
+        val actual = GitLineHandlerFactoryImpl(project).invoke(updateIndexCommand, vcsRoot, files)
+        val expected = buildExpected(updateIndexCommand, files)
+
+        assertThat(actual.printableCommandLine()).isEqualTo(expected)
     }
 
-    private fun buildExpected(commandString: String, files: List<VirtualFile>): String {
-        return "git update-index $commandString " + files.joinToString(" ", transform = VirtualFile::getName)
-    }
+    private fun buildExpected(command: ExtendedUpdateIndexCommand, files: List<VirtualFile>) =
+            "git update-index ${command.command} " + files.joinToString(" ", transform = VirtualFile::getName)
 
-    private fun rootVcsToFileListEntry() = mockk<Entry<VirtualFile, List<VirtualFile>>> {
-        val root = MockVirtualFile(true, randomAlphabetic(LIMIT))
-
-        every { key } returns root
-        every { value } returns mockVirtualFiles().onEach { it.parent = root }
+    private fun vcsRootToFileListPair() = MockVirtualFile(true, randomAlphabetic(LIMIT)).let { root ->
+        root to mockVirtualFiles().onEach { it.parent = root }
     }
 
     private fun mockVirtualFiles() = generate { MockVirtualFile(randomAlphabetic(LIMIT)) }
-            .limit(nextInt(1, LIMIT).toLong())
-            .collect(toList())
+            .limit(nextInt(1, LIMIT))
+            .toList()
 }
