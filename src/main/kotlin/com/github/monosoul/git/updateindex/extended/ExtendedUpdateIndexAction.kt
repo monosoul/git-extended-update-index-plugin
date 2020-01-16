@@ -46,7 +46,9 @@ sealed class ExtendedUpdateIndexAction(private val command: ExtendedUpdateIndexC
                                     .flatMap(GitCommandResult::getErrorOutput)
                                     .forEach(logger::error)
                         }
-                        .values.flatten().forEach(vcsDirtyScopeManager::fileDirty)
+                        .apply {
+                            vcsDirtyScopeManager.filesDirty(values.flatten(), null)
+                        }
             }
         }
     }
