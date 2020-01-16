@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>git-extended-update-index</id>
     <name>Git extended update-index</name>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <vendor email="kloz.klaud@gmail.com" url="https://github.com/monosoul/git-extended-update-index-plugin">
         Andrei Nevedomskii
     </vendor>
@@ -20,6 +20,7 @@
     <change-notes><![CDATA[
       Release 0.0.1: Initial release.<br>
       Release 0.0.2: Update dependencies to make the plugin available on all platforms.<br>
+      Release 0.0.3: rewrite the plugin in Kotlin.<br>
     ]]>
     </change-notes>
 
@@ -30,6 +31,24 @@
 
     <extensions defaultExtensionNs="com.intellij">
     </extensions>
+
+    <project-components>
+        <component>
+            <interface-class>com.github.monosoul.git.updateindex.extended.GitLineHandlerFactory</interface-class>
+            <implementation-class>com.github.monosoul.git.updateindex.extended.GitLineHandlerFactoryImpl</implementation-class>
+            <loadForDefaultProject/>
+        </component>
+        <component>
+            <interface-class>com.github.monosoul.git.updateindex.extended.support.CommandInvoker</interface-class>
+            <implementation-class>com.github.monosoul.git.updateindex.extended.support.CommandInvokerImpl</implementation-class>
+            <loadForDefaultProject/>
+        </component>
+        <component>
+            <interface-class>com.github.monosoul.git.updateindex.extended.support.PresentationUpdater</interface-class>
+            <implementation-class>com.github.monosoul.git.updateindex.extended.support.PresentationUpdaterImpl</implementation-class>
+            <loadForDefaultProject/>
+        </component>
+    </project-components>
 
     <actions>
         <group id="monosoul.Git.UpdateIndex.Extended.ContextMenu">
