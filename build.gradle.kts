@@ -3,7 +3,7 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent.*
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 group = "com.github.monosoul"
-version = "0.0.2"
+version = "0.0.3"
 
 plugins {
     id("org.jetbrains.intellij") version "0.4.15"
