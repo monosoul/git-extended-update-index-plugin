@@ -28,9 +28,7 @@ class CommandInvoker(private val project: Project) {
                                 .flatMap(GitCommandResult::getErrorOutput)
                                 .forEach(logger::error)
                     }
-                    .apply {
-                        vcsDirtyScopeManager.filesDirty(values.flatten(), null)
-                    }
+                    .values.flatten().forEach(vcsDirtyScopeManager::fileDirty)
         }
     }
 
