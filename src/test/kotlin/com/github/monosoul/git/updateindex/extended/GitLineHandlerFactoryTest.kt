@@ -8,6 +8,7 @@ import com.intellij.openapi.util.Disposer.dispose
 import com.intellij.openapi.vcs.ProjectLevelVcsManager
 import com.intellij.openapi.vfs.VirtualFile
 import git4idea.GitVcs
+import git4idea.commands.GitAuthenticationMode.NONE
 import git4idea.config.GitExecutableManager
 import git4idea.config.GitVersion
 import io.mockk.every
@@ -74,6 +75,7 @@ internal class GitLineHandlerFactoryTest {
         val expected = buildExpected(updateIndexCommand, files)
 
         assertThat(actual.printableCommandLine()).isEqualTo(expected)
+        assertThat(actual.ignoreAuthenticationMode).isEqualTo(NONE)
     }
 
     private fun buildExpected(command: ExtendedUpdateIndexCommand, files: List<VirtualFile>) =

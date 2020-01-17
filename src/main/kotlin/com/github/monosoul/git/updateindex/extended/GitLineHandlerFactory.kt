@@ -3,6 +3,7 @@ package com.github.monosoul.git.updateindex.extended
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
+import git4idea.commands.GitAuthenticationMode.NONE
 import git4idea.commands.GitCommand
 import git4idea.commands.GitLineHandler
 
@@ -13,5 +14,6 @@ class GitLineHandlerFactory(private val project: Project) {
             GitLineHandler(project, vcsRoot, GitCommand.UPDATE_INDEX).apply {
                 addParameters(command.command)
                 addRelativeFiles(files)
+                ignoreAuthenticationMode = NONE
             }
 }
