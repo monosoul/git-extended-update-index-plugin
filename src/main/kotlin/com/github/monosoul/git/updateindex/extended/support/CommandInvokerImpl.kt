@@ -33,7 +33,7 @@ class CommandInvokerImpl(private val project: Project) : CommandInvoker {
     }
 
     private val Project.gitLineHandlerFactory: GitLineHandlerFactory
-        get() = getComponent(GitLineHandlerFactory::class.java)
+        get() = getService(GitLineHandlerFactory::class.java)
 
     private val Project.vcsDirtyScopeManager: VcsDirtyScopeManager
         get() = let(VcsDirtyScopeManager::getInstance)

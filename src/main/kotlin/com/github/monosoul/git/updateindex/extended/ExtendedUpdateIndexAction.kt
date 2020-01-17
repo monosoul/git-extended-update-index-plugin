@@ -25,11 +25,11 @@ sealed class ExtendedUpdateIndexAction(private val command: ExtendedUpdateIndexC
     }
 
     private fun Project.invokeCommand(selectedFiles: Array<VirtualFile>, command: ExtendedUpdateIndexCommand) {
-        getComponent(CommandInvoker::class.java)?.invoke(selectedFiles, command)
+        getService(CommandInvoker::class.java)?.invoke(selectedFiles, command)
     }
 
     private fun Project.updatePresentation(presentation: Presentation) {
-        getComponent(PresentationUpdater::class.java)?.invoke(presentation)
+        getService(PresentationUpdater::class.java)?.invoke(presentation)
     }
 }
 

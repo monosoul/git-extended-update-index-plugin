@@ -20,35 +20,25 @@
     <change-notes><![CDATA[
       Release 0.0.1: Initial release.<br>
       Release 0.0.2: Update dependencies to make the plugin available on all platforms.<br>
-      Release 0.0.3: rewrite the plugin in Kotlin.<br>
+      Release 0.0.3: rewrote the plugin in Kotlin<br>
     ]]>
     </change-notes>
 
-    <idea-version since-build="181"/>
+    <idea-version since-build="193.2956.37"/>
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.vcs</depends>
     <depends>Git4Idea</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-    </extensions>
+        <projectService serviceInterface="com.github.monosoul.git.updateindex.extended.GitLineHandlerFactory"
+                        serviceImplementation="com.github.monosoul.git.updateindex.extended.GitLineHandlerFactoryImpl"/>
 
-    <project-components>
-        <component>
-            <interface-class>com.github.monosoul.git.updateindex.extended.GitLineHandlerFactory</interface-class>
-            <implementation-class>com.github.monosoul.git.updateindex.extended.GitLineHandlerFactoryImpl</implementation-class>
-            <loadForDefaultProject/>
-        </component>
-        <component>
-            <interface-class>com.github.monosoul.git.updateindex.extended.support.CommandInvoker</interface-class>
-            <implementation-class>com.github.monosoul.git.updateindex.extended.support.CommandInvokerImpl</implementation-class>
-            <loadForDefaultProject/>
-        </component>
-        <component>
-            <interface-class>com.github.monosoul.git.updateindex.extended.support.PresentationUpdater</interface-class>
-            <implementation-class>com.github.monosoul.git.updateindex.extended.support.PresentationUpdaterImpl</implementation-class>
-            <loadForDefaultProject/>
-        </component>
-    </project-components>
+        <projectService serviceInterface="com.github.monosoul.git.updateindex.extended.support.CommandInvoker"
+                        serviceImplementation="com.github.monosoul.git.updateindex.extended.support.CommandInvokerImpl"/>
+
+        <projectService serviceInterface="com.github.monosoul.git.updateindex.extended.support.PresentationUpdater"
+                        serviceImplementation="com.github.monosoul.git.updateindex.extended.support.PresentationUpdaterImpl"/>
+    </extensions>
 
     <actions>
         <group id="monosoul.Git.UpdateIndex.Extended.ContextMenu">

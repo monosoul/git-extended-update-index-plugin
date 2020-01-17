@@ -69,13 +69,13 @@ internal class ExtendedUpdateIndexActionTest {
     @ArgumentsSource(ExtendedUpdateIndexActionArgumentsSource::class)
     fun `should do nothing if presentation updater is null`(action: ExtendedUpdateIndexAction) {
         every { context.project } returns project
-        every { project.getComponent(PresentationUpdater::class.java) } returns null
+        every { project.getService(PresentationUpdater::class.java) } returns null
 
         action.update(event)
 
         verifySequence {
             context.project
-            project.getComponent(PresentationUpdater::class.java)
+            project.getService(PresentationUpdater::class.java)
             presentationUpdater wasNot Called
             presentation wasNot Called
         }
@@ -87,13 +87,13 @@ internal class ExtendedUpdateIndexActionTest {
             action: ExtendedUpdateIndexAction
     ) {
         every { context.project } returns project
-        every { project.getComponent(PresentationUpdater::class.java) } returns presentationUpdater
+        every { project.getService(PresentationUpdater::class.java) } returns presentationUpdater
 
         action.update(event)
 
         verifySequence {
             context.project
-            project.getComponent(PresentationUpdater::class.java)
+            project.getService(PresentationUpdater::class.java)
             presentationUpdater.invoke(presentation)
         }
     }
@@ -102,7 +102,7 @@ internal class ExtendedUpdateIndexActionTest {
     @ArgumentsSource(ExtendedUpdateIndexActionArgumentsSource::class)
     fun `should do nothing if command invoker is null`(action: ExtendedUpdateIndexAction) {
         every { context.project } returns project
-        every { project.getComponent(CommandInvoker::class.java) } returns null
+        every { project.getService(CommandInvoker::class.java) } returns null
 
         val selectedFiles = emptyArray<VirtualFile>()
         every { context.selectedFiles } returns selectedFiles
@@ -112,7 +112,7 @@ internal class ExtendedUpdateIndexActionTest {
         verify {
             context.project
             context.selectedFiles
-            project.getComponent(CommandInvoker::class.java)
+            project.getService(CommandInvoker::class.java)
             commandInvoker wasNot Called
         }
     }
@@ -123,7 +123,7 @@ internal class ExtendedUpdateIndexActionTest {
             action: ExtendedUpdateIndexAction
     ) {
         every { context.project } returns project
-        every { project.getComponent(CommandInvoker::class.java) } returns commandInvoker
+        every { project.getService(CommandInvoker::class.java) } returns commandInvoker
 
         val selectedFiles = emptyArray<VirtualFile>()
         every { context.selectedFiles } returns selectedFiles
@@ -133,7 +133,7 @@ internal class ExtendedUpdateIndexActionTest {
         verifySequence {
             context.project
             context.selectedFiles
-            project.getComponent(CommandInvoker::class.java)
+            project.getService(CommandInvoker::class.java)
             commandInvoker.invoke(selectedFiles, any())
         }
     }
