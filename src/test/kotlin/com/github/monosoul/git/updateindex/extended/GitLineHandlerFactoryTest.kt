@@ -24,7 +24,7 @@ import java.util.stream.Stream.generate
 import kotlin.streams.toList
 
 @ExtendWith(MockKExtension::class)
-internal class GitLineHandlerFactoryImplTest {
+internal class GitLineHandlerFactoryTest {
 
     private companion object {
         val CAN_NOT_OVERRIDE_GIT_CONFIG_FOR_COMMAND = GitVersion(1, 7, 1, 0)
@@ -70,7 +70,7 @@ internal class GitLineHandlerFactoryImplTest {
     fun `should build a GitLineHandler with supplied command and files`() {
         val (vcsRoot, files) = vcsRootToFileListPair()
 
-        val actual = GitLineHandlerFactoryImpl(project).invoke(updateIndexCommand, vcsRoot, files)
+        val actual = GitLineHandlerFactory(project).invoke(updateIndexCommand, vcsRoot, files)
         val expected = buildExpected(updateIndexCommand, files)
 
         assertThat(actual.printableCommandLine()).isEqualTo(expected)

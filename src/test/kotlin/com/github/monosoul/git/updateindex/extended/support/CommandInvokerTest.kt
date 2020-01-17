@@ -2,8 +2,8 @@ package com.github.monosoul.git.updateindex.extended.support
 
 import com.github.monosoul.git.updateindex.extended.*
 import com.github.monosoul.git.updateindex.extended.registerService
-import com.github.monosoul.git.updateindex.extended.support.CommandInvokerImplTest.FilesAndCommandArgumentsSource.NoVcsRoot
-import com.github.monosoul.git.updateindex.extended.support.CommandInvokerImplTest.FilesAndCommandArgumentsSource.WithVcsRoot
+import com.github.monosoul.git.updateindex.extended.support.CommandInvokerTest.FilesAndCommandArgumentsSource.NoVcsRoot
+import com.github.monosoul.git.updateindex.extended.support.CommandInvokerTest.FilesAndCommandArgumentsSource.WithVcsRoot
 import com.intellij.mock.MockApplication
 import com.intellij.mock.MockProject
 import com.intellij.openapi.application.ApplicationManager.setApplication
@@ -31,7 +31,7 @@ import java.util.stream.Stream.generate
 import kotlin.streams.toList
 
 @ExtendWith(MockKExtension::class)
-internal class CommandInvokerImplTest {
+internal class CommandInvokerTest {
 
     private lateinit var parent: TestDisposable
     private lateinit var application: MockApplication
@@ -52,7 +52,7 @@ internal class CommandInvokerImplTest {
     @MockK
     private lateinit var gitCommandResult: GitCommandResult
 
-    private lateinit var invoker: CommandInvokerImpl
+    private lateinit var invoker: CommandInvoker
 
     @BeforeEach
     fun setUp() {
@@ -67,12 +67,12 @@ internal class CommandInvokerImplTest {
         project.registerService(dirtyScopeManager, parent)
         project.registerService(gitLineHandlerFactory, parent)
 
-        appender = mockedAppender<CommandInvokerImpl>()
+        appender = mockedAppender<CommandInvoker>()
 
         every { gitLineHandlerFactory.invoke(any(), any(), any()) } returns gitLineHandler
         every { git.runCommand(any<GitLineHandler>()) } returns gitCommandResult
 
-        invoker = CommandInvokerImpl(project)
+        invoker = CommandInvoker(project)
     }
 
     @AfterEach

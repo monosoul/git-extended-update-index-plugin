@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(MockKExtension::class)
-internal class PresentationUpdaterImplTest {
+internal class PresentationUpdaterTest {
 
     @MockK
     private lateinit var project: Project
@@ -21,7 +21,7 @@ internal class PresentationUpdaterImplTest {
     @MockK(relaxUnitFun = true)
     private lateinit var presentation: Presentation
     @InjectMockKs
-    private lateinit var updater: PresentationUpdaterImpl
+    private lateinit var updater: PresentationUpdater
 
     @Test
     fun `should make the presentation disabled and invisible when VCS manager is null`() {
