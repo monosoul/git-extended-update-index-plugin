@@ -12,3 +12,21 @@ It adds the support for the next subcommands:
  - --no-skip-worktree
  - --chmod=+x
  - --chmod=-x
+
+## Screenshots
+![New items in the git context menu](screenshots/screenshot_1.png)
+
+![New items in the git context menu](screenshots/screenshot_2.png)
+
+## Release History
+* 0.0.3
+    * Rewrote the plugin in Kotlin.
+    * Switched to modern IntelliJ API.
+    * Added a plugin icon.
+* 0.0.2
+    * Updated dependencies to make the plugin available on all platforms.
+* 0.0.1
+    * Initial release.
+    
+## License
+The software is licensed under the [Apache-2.0 License](LICENSE).
