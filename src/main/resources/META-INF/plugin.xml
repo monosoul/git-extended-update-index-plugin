@@ -18,9 +18,22 @@
     ]]></description>
 
     <change-notes><![CDATA[
-      Release 0.0.1: Initial release.<br>
-      Release 0.0.2: Update dependencies to make the plugin available on all platforms.<br>
-      Release 0.0.3: rewrote the plugin in Kotlin; switched to modern IntelliJ API<br>
+      <b>Release 0.0.1:</b>
+      <ul>
+        <li>Initial release.</li>
+      </ul>
+      <br>
+      <b>Release 0.0.2:</b>
+      <ul>
+        <li>Update dependencies to make the plugin available on all platforms.</li>
+      </ul>
+      <br>
+      <b>Release 0.0.3:</b>
+      <ul>
+        <li>rewrote the plugin in Kotlin;</li>
+        <li>switched to modern IntelliJ API;</li>
+        <li>added a plugin icon.</li>
+      </ul>
     ]]>
     </change-notes>
 
@@ -34,7 +47,8 @@
 
         <projectService serviceImplementation="com.github.monosoul.git.updateindex.extended.support.CommandInvoker"/>
 
-        <projectService serviceImplementation="com.github.monosoul.git.updateindex.extended.support.PresentationUpdater"/>
+        <projectService
+                serviceImplementation="com.github.monosoul.git.updateindex.extended.support.PresentationUpdater"/>
     </extensions>
 
     <actions>
