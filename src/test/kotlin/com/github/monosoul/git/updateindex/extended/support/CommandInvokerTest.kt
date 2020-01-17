@@ -89,14 +89,12 @@ internal class CommandInvokerTest {
 
         verifyOrder {
             vcsManager.getVcsRootFor(files[0])
-            dirtyScopeManager.filesDirty(withArg {
-                assertThat(it).isEmpty()
-            }, null)
         }
         verifyAll {
             git wasNot Called
             gitLineHandlerFactory wasNot Called
             gitLineHandler wasNot Called
+            dirtyScopeManager wasNot Called
         }
     }
 
@@ -122,9 +120,9 @@ internal class CommandInvokerTest {
             })
             git.runCommand(gitLineHandler)
             gitCommandResult.success()
-            dirtyScopeManager.filesDirty(withArg {
-                assertThat(it).containsExactlyInAnyOrder(*files)
-            }, null)
+        }
+        verify(exactly = files.size) {
+            dirtyScopeManager.fileDirty(any<VirtualFile>())
         }
         verify(inverse = true) {
             appender.doAppend(any())
@@ -160,9 +158,9 @@ internal class CommandInvokerTest {
                 assertThat(it.message).isEqualTo(error)
                 assertThat(it.getLevel()).isEqualTo(ERROR)
             })
-            dirtyScopeManager.filesDirty(withArg {
-                assertThat(it).containsExactlyInAnyOrder(*files)
-            }, null)
+        }
+        verify(exactly = files.size) {
+            dirtyScopeManager.fileDirty(any<VirtualFile>())
         }
     }
 
