@@ -19,6 +19,10 @@ It adds the support for the next subcommands:
 ![New items in the git context menu](screenshots/screenshot_2.png)
 
 ## Release History
+* 0.0.4
+  * Switched to modern IntelliJ API.
+  * Set Java 11 as compile target.
+  * Use the latest Kotlin compiler.
 * 0.0.3
     * Rewrote the plugin in Kotlin.
     * Switched to modern IntelliJ API.
