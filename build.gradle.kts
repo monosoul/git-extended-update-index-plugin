@@ -12,14 +12,10 @@ plugins {
 }
 
 intellij {
-    version = "203.7717.56"
     pluginName = "Git extended update-index"
-    updateSinceUntilBuild = false
-    sameSinceUntilBuild = true
-    setPlugins(
-            "git4idea",
-            "org.jetbrains.kotlin:203-1.4.32-release-IJ7148.5"
-    )
+    updateSinceUntilBuild = true
+    sameSinceUntilBuild = false
+    setPlugins("git4idea")
 }
 
 dependencies {
@@ -42,10 +38,8 @@ tasks {
         }
     }
 
-    buildSearchableOptions {
-        // there is a memory leak in kotlin plugin versions 203-*
-        // it prevent this task from building
-        enabled = false
+    patchPluginXml {
+        setUntilBuild(null)
     }
 
     "test"(Test::class) {
