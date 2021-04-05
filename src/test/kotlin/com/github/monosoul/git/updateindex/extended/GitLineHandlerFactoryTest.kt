@@ -17,11 +17,12 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import org.apache.commons.lang3.RandomStringUtils.randomAlphabetic
 import org.apache.commons.lang3.RandomUtils.nextInt
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.extension.ExtendWith
+import strikt.api.expectThat
+import strikt.assertions.isEqualTo
 import java.util.stream.Stream.generate
 import kotlin.streams.toList
 
@@ -40,10 +41,13 @@ internal class GitLineHandlerFactoryTest {
 
     @MockK
     private lateinit var gitExecutableManager: GitExecutableManager
+
     @MockK
     private lateinit var vcsManager: ProjectLevelVcsManager
+
     @MockK
     private lateinit var gitExecutable: GitExecutable
+
     @MockK
     private lateinit var gitVcs: GitVcs
 
@@ -81,8 +85,10 @@ internal class GitLineHandlerFactoryTest {
         val actual = GitLineHandlerFactory(project).invoke(updateIndexCommand, vcsRoot, files)
         val expected = buildExpected(updateIndexCommand, files)
 
-        assertThat(actual.printableCommandLine()).isEqualTo(expected)
-        assertThat(actual.ignoreAuthenticationMode).isEqualTo(NONE)
+        expectThat(actual) {
+            get { printableCommandLine() } isEqualTo expected
+            get { ignoreAuthenticationMode } isEqualTo NONE
+        }
     }
 
     private fun buildExpected(command: ExtendedUpdateIndexCommand, files: List<VirtualFile>) =

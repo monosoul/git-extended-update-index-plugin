@@ -1,7 +1,6 @@
 package com.github.monosoul.git.updateindex.extended.support
 
 import com.github.monosoul.git.updateindex.extended.*
-import com.github.monosoul.git.updateindex.extended.registerService
 import com.github.monosoul.git.updateindex.extended.support.CommandInvokerTest.FilesAndCommandArgumentsSource.NoVcsRoot
 import com.github.monosoul.git.updateindex.extended.support.CommandInvokerTest.FilesAndCommandArgumentsSource.WithVcsRoot
 import com.intellij.mock.MockApplication
@@ -21,12 +20,14 @@ import org.apache.commons.lang3.RandomStringUtils.randomAlphabetic
 import org.apache.commons.lang3.RandomUtils.nextInt
 import org.apache.log4j.Appender
 import org.apache.log4j.Level.ERROR
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ArgumentsSource
+import strikt.api.expectThat
+import strikt.assertions.containsExactlyInAnyOrder
+import strikt.assertions.isEqualTo
 import java.util.stream.Stream.generate
 import kotlin.streams.toList
 
@@ -41,14 +42,19 @@ internal class CommandInvokerTest {
 
     @MockK
     private lateinit var git: Git
+
     @MockK
     private lateinit var vcsManager: ProjectLevelVcsManager
+
     @MockK(relaxUnitFun = true)
     private lateinit var dirtyScopeManager: VcsDirtyScopeManager
+
     @MockK
     private lateinit var gitLineHandlerFactory: GitLineHandlerFactory
+
     @MockK
     private lateinit var gitLineHandler: GitLineHandler
+
     @MockK
     private lateinit var gitCommandResult: GitCommandResult
 
@@ -116,7 +122,7 @@ internal class CommandInvokerTest {
         }
         verifyOrder {
             gitLineHandlerFactory.invoke(command, root, withArg {
-                assertThat(it).containsExactlyInAnyOrder(*files)
+                expectThat(it).containsExactlyInAnyOrder(*files)
             })
             git.runCommand(gitLineHandler)
             gitCommandResult.success()
@@ -149,14 +155,16 @@ internal class CommandInvokerTest {
         }
         verifyOrder {
             gitLineHandlerFactory.invoke(command, root, withArg {
-                assertThat(it).containsExactlyInAnyOrder(*files)
+                expectThat(it).containsExactlyInAnyOrder(*files)
             })
             git.runCommand(gitLineHandler)
             gitCommandResult.success()
             gitCommandResult.errorOutput
             appender.doAppend(withArg {
-                assertThat(it.message).isEqualTo(error)
-                assertThat(it.getLevel()).isEqualTo(ERROR)
+                expectThat(it) {
+                    get { message } isEqualTo error
+                    get { getLevel() } isEqualTo ERROR
+                }
             })
         }
         verify(exactly = files.size) {

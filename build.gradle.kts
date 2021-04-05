@@ -29,7 +29,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-params:$junitVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
-    testImplementation("org.assertj:assertj-core:3.14.0")
+    testImplementation("io.strikt:strikt-jvm:0.30.0")
     testImplementation("io.mockk:mockk:1.11.0")
     testImplementation("org.apache.commons:commons-lang3:3.12.0")
 }
