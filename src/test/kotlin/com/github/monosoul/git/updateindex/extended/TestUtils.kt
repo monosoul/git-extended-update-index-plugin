@@ -21,7 +21,7 @@ internal inline fun <reified T> mockedAppender() = mockk<Appender>(relaxed = tru
     }
 }
 
-internal inline fun <reified T> MockComponentManager.registerService(
+internal inline fun <reified T : Any> MockComponentManager.registerService(
         serviceImplementation: T,
         parentDisposable: Disposable
 ) = registerService(T::class.java, serviceImplementation, parentDisposable)
