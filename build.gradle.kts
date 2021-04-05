@@ -6,8 +6,8 @@ group = "com.github.monosoul"
 version = "0.0.3"
 
 plugins {
-    id("org.jetbrains.intellij") version "0.4.15"
-    kotlin("jvm") version "1.3.61"
+    id("org.jetbrains.intellij") version "0.7.2"
+    kotlin("jvm") version "1.4.32"
     jacoco
 }
 
@@ -21,13 +21,13 @@ intellij {
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
-    val junitVersion  = "5.5.2"
+    val junitVersion = "5.7.1"
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-params:$junitVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
     testImplementation("org.assertj:assertj-core:3.14.0")
-    testImplementation("io.mockk:mockk:1.9.3")
-    testImplementation("org.apache.commons:commons-lang3:3.9")
+    testImplementation("io.mockk:mockk:1.11.0")
+    testImplementation("org.apache.commons:commons-lang3:3.12.0")
 }
 
 tasks {
