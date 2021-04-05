@@ -9,6 +9,7 @@ import com.intellij.openapi.vcs.ProjectLevelVcsManager
 import com.intellij.openapi.vfs.VirtualFile
 import git4idea.GitVcs
 import git4idea.commands.GitAuthenticationMode.NONE
+import git4idea.config.GitExecutable
 import git4idea.config.GitExecutableManager
 import git4idea.config.GitVersion
 import io.mockk.every
@@ -35,11 +36,14 @@ internal class GitLineHandlerFactoryTest {
     private lateinit var application: MockApplication
     private lateinit var project: MockProject
     private lateinit var updateIndexCommand: ExtendedUpdateIndexCommand
+    private lateinit var exePath: String
 
     @MockK
     private lateinit var gitExecutableManager: GitExecutableManager
     @MockK
     private lateinit var vcsManager: ProjectLevelVcsManager
+    @MockK
+    private lateinit var gitExecutable: GitExecutable
     @MockK
     private lateinit var gitVcs: GitVcs
 
@@ -55,11 +59,14 @@ internal class GitLineHandlerFactoryTest {
         project.registerService(vcsManager, parent)
 
         updateIndexCommand = randomEnum()
+        exePath = randomAlphabetic(LIMIT)
 
         every { gitVcs.version } returns CAN_NOT_OVERRIDE_GIT_CONFIG_FOR_COMMAND
         every { vcsManager.findVcsByName(GitVcs.NAME) } returns gitVcs
         every { gitExecutableManager.getPathToGit(any()) } returns randomAlphabetic(LIMIT)
         every { gitExecutableManager.tryGetVersion(any()) } returns CAN_NOT_OVERRIDE_GIT_CONFIG_FOR_COMMAND
+        every { gitExecutableManager.getExecutable(project) } returns gitExecutable
+        every { gitExecutable.exePath } returns exePath
     }
 
     @AfterEach
