@@ -16,7 +16,7 @@ class CommandInvoker(private val project: Project) {
 
     private val logger = javaClass.let(LoggerFactory::getLogger)
 
-    operator fun invoke(selectedFiles: Array<VirtualFile>, command: ExtendedUpdateIndexCommand) {
+    operator fun invoke(selectedFiles: Iterable<VirtualFile>, command: ExtendedUpdateIndexCommand) {
         project.run {
             selectedFiles
                     .mapNotNull { fileToVcsRoot(it) }

@@ -6,25 +6,25 @@ import com.github.monosoul.git.updateindex.extended.ExtendedUpdateIndexCommand.N
 import com.github.monosoul.git.updateindex.extended.ExtendedUpdateIndexCommand.SKIP_WORKTREE
 import com.github.monosoul.git.updateindex.extended.support.CommandInvoker
 import com.github.monosoul.git.updateindex.extended.support.PresentationUpdater
+import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.Presentation
+import com.intellij.openapi.project.DumbAwareAction
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.vcs.actions.AbstractVcsAction
-import com.intellij.openapi.vcs.actions.VcsContext
+import com.intellij.openapi.vcs.actions.VcsContextUtil
 import com.intellij.openapi.vfs.VirtualFile
 
-sealed class ExtendedUpdateIndexAction(private val command: ExtendedUpdateIndexCommand) : AbstractVcsAction() {
-
-    override fun update(context: VcsContext, presentation: Presentation) {
-        context.project?.updatePresentation(presentation)
-    }
-
-    override fun actionPerformed(context: VcsContext) {
-        context.run {
-            project?.invokeCommand(selectedFiles, command)
+sealed class ExtendedUpdateIndexAction(private val command: ExtendedUpdateIndexCommand) : DumbAwareAction() {
+    override fun update(event: AnActionEvent) {
+        event.run {
+            project?.updatePresentation(presentation)
         }
     }
 
-    private fun Project.invokeCommand(selectedFiles: Array<VirtualFile>, command: ExtendedUpdateIndexCommand) {
+    override fun actionPerformed(event: AnActionEvent) {
+        event.project?.invokeCommand(VcsContextUtil.selectedFiles(event.dataContext))
+    }
+
+    private fun Project.invokeCommand(selectedFiles: Iterable<VirtualFile>) {
         getService(CommandInvoker::class.java)?.invoke(selectedFiles, command)
     }
 

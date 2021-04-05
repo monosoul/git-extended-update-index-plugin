@@ -1,6 +1,14 @@
 package com.github.monosoul.git.updateindex.extended.support
 
-import com.github.monosoul.git.updateindex.extended.*
+import com.github.monosoul.git.updateindex.extended.AbstractMultiArgumentsSource
+import com.github.monosoul.git.updateindex.extended.ExtendedUpdateIndexCommand
+import com.github.monosoul.git.updateindex.extended.GitLineHandlerFactory
+import com.github.monosoul.git.updateindex.extended.LIMIT
+import com.github.monosoul.git.updateindex.extended.TestDisposable
+import com.github.monosoul.git.updateindex.extended.limit
+import com.github.monosoul.git.updateindex.extended.mockedAppender
+import com.github.monosoul.git.updateindex.extended.randomEnum
+import com.github.monosoul.git.updateindex.extended.registerService
 import com.github.monosoul.git.updateindex.extended.support.CommandInvokerTest.FilesAndCommandArgumentsSource.NoVcsRoot
 import com.github.monosoul.git.updateindex.extended.support.CommandInvokerTest.FilesAndCommandArgumentsSource.WithVcsRoot
 import com.intellij.mock.MockApplication
@@ -13,9 +21,14 @@ import com.intellij.openapi.vfs.VirtualFile
 import git4idea.commands.Git
 import git4idea.commands.GitCommandResult
 import git4idea.commands.GitLineHandler
-import io.mockk.*
+import io.mockk.Called
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
+import io.mockk.mockk
+import io.mockk.verify
+import io.mockk.verifyAll
+import io.mockk.verifyOrder
 import org.apache.commons.lang3.RandomStringUtils.randomAlphabetic
 import org.apache.commons.lang3.RandomUtils.nextInt
 import org.apache.log4j.Appender
@@ -88,7 +101,10 @@ internal class CommandInvokerTest {
 
     @ParameterizedTest
     @ArgumentsSource(NoVcsRoot::class)
-    fun `should do nothing if a file has no VCS root`(files: Array<VirtualFile>, command: ExtendedUpdateIndexCommand) {
+    fun `should do nothing if a file has no VCS root`(
+            files: List<VirtualFile>,
+            command: ExtendedUpdateIndexCommand
+    ) {
         every { vcsManager.getVcsRootFor(any<VirtualFile>()) } returns null
 
         invoker.invoke(files, command)
@@ -107,7 +123,7 @@ internal class CommandInvokerTest {
     @ParameterizedTest
     @ArgumentsSource(WithVcsRoot::class)
     internal fun `should execute a command and log nothing if it was successful`(
-            files: Array<VirtualFile>,
+            files: List<VirtualFile>,
             command: ExtendedUpdateIndexCommand
     ) {
         val root = mockk<VirtualFile>()
@@ -122,7 +138,7 @@ internal class CommandInvokerTest {
         }
         verifyOrder {
             gitLineHandlerFactory.invoke(command, root, withArg {
-                expectThat(it).containsExactlyInAnyOrder(*files)
+                expectThat(it) containsExactlyInAnyOrder files
             })
             git.runCommand(gitLineHandler)
             gitCommandResult.success()
@@ -138,7 +154,7 @@ internal class CommandInvokerTest {
     @ParameterizedTest
     @ArgumentsSource(WithVcsRoot::class)
     internal fun `should execute a command and log errors if it was unsuccessful`(
-            files: Array<VirtualFile>,
+            files: List<VirtualFile>,
             command: ExtendedUpdateIndexCommand
     ) {
         val root = mockk<VirtualFile>()
@@ -155,7 +171,7 @@ internal class CommandInvokerTest {
         }
         verifyOrder {
             gitLineHandlerFactory.invoke(command, root, withArg {
-                expectThat(it).containsExactlyInAnyOrder(*files)
+                expectThat(it) containsExactlyInAnyOrder files
             })
             git.runCommand(gitLineHandler)
             gitCommandResult.success()
@@ -177,20 +193,19 @@ internal class CommandInvokerTest {
     ) : AbstractMultiArgumentsSource(*generators) {
 
         class NoVcsRoot : FilesAndCommandArgumentsSource(
-                { arrayOf(mockk<VirtualFile>()) },
+                { listOf(mockk<VirtualFile>()) },
                 { randomEnum<ExtendedUpdateIndexCommand>() }
         )
 
         class WithVcsRoot : FilesAndCommandArgumentsSource(
-                { virtualFileArray() },
+                { virtualFileList() },
                 { randomEnum<ExtendedUpdateIndexCommand>() }
         )
 
         companion object {
-            private fun virtualFileArray() = generate { mockk<VirtualFile>() }
+            private fun virtualFileList() = generate { mockk<VirtualFile>() }
                     .limit(nextInt(1, LIMIT))
                     .toList()
-                    .toTypedArray()
         }
     }
 }
