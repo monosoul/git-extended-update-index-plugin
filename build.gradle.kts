@@ -21,10 +21,8 @@ intellij {
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
-    val junitVersion = "5.7.1"
-    testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:$junitVersion")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
+    testImplementation(platform("org.junit:junit-bom:5.7.1"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("io.strikt:strikt-jvm:0.30.0")
     testImplementation("io.mockk:mockk:1.11.0")
     testImplementation("org.apache.commons:commons-lang3:3.12.0")
