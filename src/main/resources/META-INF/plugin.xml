@@ -24,6 +24,7 @@
         <li>set Java 11 as compile target;</li>
         <li>use the latest Kotlin compiler.</li>
       </ul>
+      <br>
       <b>Release 0.0.3:</b>
       <ul>
         <li>rewrote the plugin in Kotlin;</li>
