@@ -18,9 +18,11 @@
     ]]></description>
 
     <change-notes><![CDATA[
-      <b>Release 0.0.1:</b>
+      <b>Release 0.0.3:</b>
       <ul>
-        <li>Initial release.</li>
+        <li>rewrote the plugin in Kotlin;</li>
+        <li>switched to modern IntelliJ API;</li>
+        <li>added a plugin icon.</li>
       </ul>
       <br>
       <b>Release 0.0.2:</b>
@@ -28,11 +30,9 @@
         <li>Update dependencies to make the plugin available on all platforms.</li>
       </ul>
       <br>
-      <b>Release 0.0.3:</b>
+      <b>Release 0.0.1:</b>
       <ul>
-        <li>rewrote the plugin in Kotlin;</li>
-        <li>switched to modern IntelliJ API;</li>
-        <li>added a plugin icon.</li>
+        <li>Initial release.</li>
       </ul>
     ]]>
     </change-notes>
