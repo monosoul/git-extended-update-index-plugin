@@ -44,7 +44,7 @@
     ]]>
     </change-notes>
 
-    <idea-version since-build="211.4961.30"/>
+    <idea-version since-build="211.6693.111"/>
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.vcs</depends>
     <depends>Git4Idea</depends>
