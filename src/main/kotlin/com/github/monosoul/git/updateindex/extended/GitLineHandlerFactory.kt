@@ -13,7 +13,11 @@ class GitLineHandlerFactory(private val project: Project) {
 
     private val logger by Slf4j
 
-    operator fun invoke(command: ExtendedUpdateIndexCommand, vcsRoot: VirtualFile, files: List<VirtualFile>): GitLineHandler {
+    operator fun invoke(
+        command: ExtendedUpdateIndexCommand,
+        vcsRoot: VirtualFile,
+        files: List<VirtualFile>
+    ): GitLineHandler {
         logger.debug("Building git line handler. Command={}; VCS Root={}, Files={}", command, vcsRoot, files)
 
         return GitLineHandler(project, vcsRoot, UPDATE_INDEX).apply {
