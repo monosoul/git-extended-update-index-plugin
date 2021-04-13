@@ -12,7 +12,7 @@ class GitLineHandlerFactory(private val project: Project) {
 
     operator fun invoke(command: ExtendedUpdateIndexCommand, vcsRoot: VirtualFile, files: List<VirtualFile>) =
             GitLineHandler(project, vcsRoot, UPDATE_INDEX).apply {
-                addParameters(command.command)
+                addParameters(command.value)
                 addRelativeFiles(files)
                 ignoreAuthenticationMode = NONE
             }

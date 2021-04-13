@@ -92,7 +92,7 @@ internal class GitLineHandlerFactoryTest {
     }
 
     private fun buildExpected(command: ExtendedUpdateIndexCommand, files: List<VirtualFile>) =
-            "git update-index ${command.command} " + files.joinToString(" ", transform = VirtualFile::getName)
+            "git update-index ${command.value} " + files.joinToString(" ", transform = VirtualFile::getName)
 
     private fun vcsRootToFileListPair() = MockVirtualFile(true, randomAlphabetic(LIMIT)).let { root ->
         root to mockVirtualFiles().onEach { it.parent = root }
