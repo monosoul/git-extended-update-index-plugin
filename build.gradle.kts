@@ -5,7 +5,7 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 group = "com.github.monosoul"
-version = "0.0.4"
+version = "0.0.5"
 
 plugins {
     id("org.jetbrains.intellij") version "0.7.2"

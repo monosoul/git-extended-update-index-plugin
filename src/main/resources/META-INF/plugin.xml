@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>git-extended-update-index</id>
     <name>Git extended update-index</name>
-    <version>0.0.4</version>
+    <version>0.0.5</version>
     <vendor email="kloz.klaud@gmail.com" url="https://github.com/monosoul/git-extended-update-index-plugin">
         Andrei Nevedomskii
     </vendor>
@@ -18,6 +18,11 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      <b>Release 0.0.5:</b>
+      <ul>
+        <li>run the commands in a background task (fixes the exception).</li>
+      </ul>
+      <br>
       <b>Release 0.0.4:</b>
       <ul>
         <li>switched to modern IntelliJ API;</li>
