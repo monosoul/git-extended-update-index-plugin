@@ -10,6 +10,7 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.vcsUtil.VcsUtil.getVcsRootFor
 import git4idea.commands.Git
 import git4idea.commands.GitCommandResult
+import git4idea.commands.GitLineHandler
 
 @Service
 class CommandInvoker(private val project: Project) {
@@ -22,17 +23,18 @@ class CommandInvoker(private val project: Project) {
         project.run {
             selectedFiles
                     .mapNotNull { fileToVcsRoot(it) }
-                    .groupBy({ it.second }, { it.first })
-                    .apply {
-                        map { (vcsRoot, files) -> gitLineHandlerFactory(command, vcsRoot, files) }
-                                .map(Git.getInstance()::runCommand)
-                                .filterNot(GitCommandResult::success)
-                                .flatMap(GitCommandResult::getErrorOutput)
-                                .forEach(logger::error)
+                    .groupBy({ (_, vcsRoot) -> vcsRoot }, { (file, _) -> file })
+                    .onEach { (vcsRoot, files) ->
+                        gitLineHandlerFactory(command, vcsRoot, files).runAndLog()
                     }
                     .values.flatten().forEach(vcsDirtyScopeManager::fileDirty)
         }
     }
+
+    private fun GitLineHandler.runAndLog() = run(Git.getInstance()::runCommand)
+            .takeUnless(GitCommandResult::success)
+            ?.let(GitCommandResult::getErrorOutput)
+            ?.forEach(logger::error)
 
     private val Project.gitLineHandlerFactory: GitLineHandlerFactory
         get() = getService(GitLineHandlerFactory::class.java)
