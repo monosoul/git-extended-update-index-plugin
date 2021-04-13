@@ -4,6 +4,7 @@ import com.github.monosoul.git.updateindex.extended.ExtendedUpdateIndexCommand.M
 import com.github.monosoul.git.updateindex.extended.ExtendedUpdateIndexCommand.MAKE_NOT_EXECUTABLE
 import com.github.monosoul.git.updateindex.extended.ExtendedUpdateIndexCommand.NO_SKIP_WORKTREE
 import com.github.monosoul.git.updateindex.extended.ExtendedUpdateIndexCommand.SKIP_WORKTREE
+import com.github.monosoul.git.updateindex.extended.logging.Slf4j
 import com.github.monosoul.git.updateindex.extended.support.CommandInvoker
 import com.github.monosoul.git.updateindex.extended.support.PresentationUpdater
 import com.intellij.openapi.actionSystem.AnActionEvent
@@ -14,6 +15,9 @@ import com.intellij.openapi.vcs.actions.VcsContextUtil
 import com.intellij.openapi.vfs.VirtualFile
 
 sealed class ExtendedUpdateIndexAction(private val command: ExtendedUpdateIndexCommand) : DumbAwareAction() {
+
+    private val logger by Slf4j
+
     override fun update(event: AnActionEvent) {
         event.run {
             project?.updatePresentation(presentation)
@@ -25,10 +29,12 @@ sealed class ExtendedUpdateIndexAction(private val command: ExtendedUpdateIndexC
     }
 
     private fun Project.invokeCommand(selectedFiles: Iterable<VirtualFile>) {
+        logger.debug("Running a command against the files: {}", selectedFiles)
         getService(CommandInvoker::class.java)?.invoke(selectedFiles, command)
     }
 
     private fun Project.updatePresentation(presentation: Presentation) {
+        logger.debug("Updating presentation")
         getService(PresentationUpdater::class.java)?.invoke(presentation)
     }
 }

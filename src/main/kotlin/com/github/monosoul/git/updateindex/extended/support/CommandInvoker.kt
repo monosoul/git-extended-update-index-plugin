@@ -2,6 +2,7 @@ package com.github.monosoul.git.updateindex.extended.support
 
 import com.github.monosoul.git.updateindex.extended.ExtendedUpdateIndexCommand
 import com.github.monosoul.git.updateindex.extended.GitLineHandlerFactory
+import com.github.monosoul.git.updateindex.extended.logging.Slf4j
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vcs.changes.VcsDirtyScopeManager
@@ -9,14 +10,15 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.vcsUtil.VcsUtil.getVcsRootFor
 import git4idea.commands.Git
 import git4idea.commands.GitCommandResult
-import org.slf4j.LoggerFactory.getLogger
 
 @Service
 class CommandInvoker(private val project: Project) {
 
-    private val logger = getLogger(CommandInvoker::class.java)
+    private val logger by Slf4j
 
     operator fun invoke(selectedFiles: Iterable<VirtualFile>, command: ExtendedUpdateIndexCommand) {
+        logger.debug("Calling {} against {}", command, selectedFiles)
+
         project.run {
             selectedFiles
                     .mapNotNull { fileToVcsRoot(it) }
