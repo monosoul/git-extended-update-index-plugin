@@ -8,7 +8,7 @@ import com.intellij.openapi.vcs.ProjectLevelVcsManager
 @Service
 class PresentationUpdater(private val project: Project) {
     operator fun invoke(presentation: Presentation) {
-        val vcsManager: ProjectLevelVcsManager? = project.let(ProjectLevelVcsManager::getInstance)
+        val vcsManager: ProjectLevelVcsManager? = ProjectLevelVcsManager.getInstance(project)
 
         presentation.apply {
             if (vcsManager == null) {

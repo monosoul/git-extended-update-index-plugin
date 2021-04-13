@@ -9,12 +9,12 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.vcsUtil.VcsUtil.getVcsRootFor
 import git4idea.commands.Git
 import git4idea.commands.GitCommandResult
-import org.slf4j.LoggerFactory
+import org.slf4j.LoggerFactory.getLogger
 
 @Service
 class CommandInvoker(private val project: Project) {
 
-    private val logger = javaClass.let(LoggerFactory::getLogger)
+    private val logger = getLogger(CommandInvoker::class.java)
 
     operator fun invoke(selectedFiles: Iterable<VirtualFile>, command: ExtendedUpdateIndexCommand) {
         project.run {
@@ -36,7 +36,7 @@ class CommandInvoker(private val project: Project) {
         get() = getService(GitLineHandlerFactory::class.java)
 
     private val Project.vcsDirtyScopeManager: VcsDirtyScopeManager
-        get() = let(VcsDirtyScopeManager::getInstance)
+        get() = VcsDirtyScopeManager.getInstance(this)
 
     private fun Project.fileToVcsRoot(file: VirtualFile) = getVcsRootFor(this, file)?.let { file to it }
 }
