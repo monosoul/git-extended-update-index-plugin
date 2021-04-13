@@ -16,10 +16,10 @@ class PresentationUpdater(private val project: Project) {
 
         presentation.apply {
             if (vcsManager == null) {
-                logger.info("No VCS manager available. Hiding the plugin menus.")
+                logger.debug("No VCS manager available. Hiding the plugin menus.")
                 isEnabledAndVisible = false
             } else {
-                logger.info("VCS manager is available. Showing the plugin menus.")
+                logger.debug("VCS manager is available. Showing the plugin menus.")
                 isVisible = true
                 isEnabled = !vcsManager.isBackgroundVcsOperationRunning
             }
