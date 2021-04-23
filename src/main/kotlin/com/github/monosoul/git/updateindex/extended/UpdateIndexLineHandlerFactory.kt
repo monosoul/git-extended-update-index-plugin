@@ -9,7 +9,7 @@ import git4idea.commands.GitCommand.UPDATE_INDEX
 import git4idea.commands.GitLineHandler
 
 @Service
-class GitLineHandlerFactory(private val project: Project) {
+class UpdateIndexLineHandlerFactory(private val project: Project) {
 
     private val logger by Slf4j
 

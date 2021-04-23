@@ -55,7 +55,7 @@ internal class ExtendedUpdateIndexTaskTest {
     private lateinit var dirtyScopeManager: VcsDirtyScopeManager
 
     @MockK
-    private lateinit var gitLineHandlerFactory: GitLineHandlerFactory
+    private lateinit var updateIndexLineHandlerFactory: UpdateIndexLineHandlerFactory
 
     @MockK
     private lateinit var gitLineHandler: GitLineHandler
@@ -74,11 +74,11 @@ internal class ExtendedUpdateIndexTaskTest {
         project = MockProject(null, parent)
         project.registerService(vcsManager, parent)
         project.registerService(dirtyScopeManager, parent)
-        project.registerService(gitLineHandlerFactory, parent)
+        project.registerService(updateIndexLineHandlerFactory, parent)
 
         appender = mockedAppender<ExtendedUpdateIndexTask>()
 
-        every { gitLineHandlerFactory.invoke(any(), any(), any()) } returns gitLineHandler
+        every { updateIndexLineHandlerFactory.invoke(any(), any(), any()) } returns gitLineHandler
         every { git.runCommand(any<GitLineHandler>()) } returns gitCommandResult
     }
 
@@ -103,7 +103,7 @@ internal class ExtendedUpdateIndexTaskTest {
         }
         verifyAll {
             git wasNot Called
-            gitLineHandlerFactory wasNot Called
+            updateIndexLineHandlerFactory wasNot Called
             gitLineHandler wasNot Called
             dirtyScopeManager wasNot Called
         }
@@ -128,7 +128,7 @@ internal class ExtendedUpdateIndexTaskTest {
             vcsManager.getVcsRootFor(any<VirtualFile>())
         }
         verifyOrder {
-            gitLineHandlerFactory.invoke(command, root, withArg {
+            updateIndexLineHandlerFactory.invoke(command, root, withArg {
                 expectThat(it) containsExactlyInAnyOrder files
             })
             git.runCommand(gitLineHandler)
@@ -159,7 +159,7 @@ internal class ExtendedUpdateIndexTaskTest {
             vcsManager.getVcsRootFor(any<VirtualFile>())
         }
         verifyOrder {
-            gitLineHandlerFactory.invoke(command, root, withArg {
+            updateIndexLineHandlerFactory.invoke(command, root, withArg {
                 expectThat(it) containsExactlyInAnyOrder files
             })
             git.runCommand(gitLineHandler)

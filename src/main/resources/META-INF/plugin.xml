@@ -55,7 +55,7 @@
     <depends>Git4Idea</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <projectService serviceImplementation="com.github.monosoul.git.updateindex.extended.GitLineHandlerFactory"/>
+        <projectService serviceImplementation="com.github.monosoul.git.updateindex.extended.UpdateIndexLineHandlerFactory"/>
 
         <projectService serviceImplementation="com.github.monosoul.git.updateindex.extended.support.CommandInvoker"/>
 
