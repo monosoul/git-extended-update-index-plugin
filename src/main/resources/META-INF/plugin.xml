@@ -82,6 +82,10 @@
                     class="com.github.monosoul.git.updateindex.extended.MakeNotExecutableAction"
                     text="Make NOT executable"
                     description="Mark file as not executable (chmod -x)"/>
+            <action id="monosoul.Git.UpdateIndex.Extended.ListFiles"
+                    class="com.github.monosoul.git.updateindex.extended.TestLsFileAction"
+                    text="Get list of files"
+                    description="Get list of files"/>
             <add-to-group group-id="Git.ContextMenu" anchor="last"/>
         </group>
     </actions>
