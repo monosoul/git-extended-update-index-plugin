@@ -82,15 +82,11 @@
                     class="com.github.monosoul.git.updateindex.extended.MakeNotExecutableAction"
                     text="Make NOT executable"
                     description="Mark file as not executable (chmod -x)"/>
-            <action id="monosoul.Git.UpdateIndex.Extended.TestLsFileAction"
-                    class="com.github.monosoul.git.updateindex.extended.TestLsFileAction"
-                    text="Get list of files"
-                    description="Get list of files"/>
             <add-to-group group-id="Git.ContextMenu" anchor="last"/>
         </group>
-        <action id="monosoul.Git.UpdateIndex.Extended.ToggleSkippedFilesAction"
-                class="com.github.monosoul.git.updateindex.extended.ToggleSkippedFilesAction"
-                text="Show Skipped Files"
+        <action id="monosoul.Git.UpdateIndex.Extended.ToggleSkippedWorktreeAction"
+                class="com.github.monosoul.git.updateindex.extended.ToggleSkippedWorktreeAction"
+                text="Show Skipped Worktree"
                 description="Show files that were marked to skip worktree">
             <add-to-group group-id="ChangesView.ViewOptions" anchor="last"/>
         </action>
