@@ -25,7 +25,7 @@ class ExtendedUpdateIndexTask(
                 .mapNotNull { fileToVcsRoot(it) }
                 .groupBy({ (_, vcsRoot) -> vcsRoot }, { (file, _) -> file })
                 .onEach { (vcsRoot, files) ->
-                    gitLineHandlerFactory(command, vcsRoot, files).runAndLog()
+                    updateIndexLineHandlerFactory(command, vcsRoot, files).runAndLog()
                     files.forEach(vcsDirtyScopeManager::fileDirty)
                 }
         }
@@ -36,8 +36,8 @@ class ExtendedUpdateIndexTask(
         ?.let(GitCommandResult::getErrorOutput)
         ?.forEach(logger::error)
 
-    private val Project.gitLineHandlerFactory: GitLineHandlerFactory
-        get() = getService(GitLineHandlerFactory::class.java)
+    private val Project.updateIndexLineHandlerFactory: UpdateIndexLineHandlerFactory
+        get() = getService(UpdateIndexLineHandlerFactory::class.java)
 
     private val Project.vcsDirtyScopeManager: VcsDirtyScopeManager
         get() = VcsDirtyScopeManager.getInstance(this)

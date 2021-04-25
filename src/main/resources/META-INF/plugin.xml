@@ -55,12 +55,15 @@
     <depends>Git4Idea</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <projectService serviceImplementation="com.github.monosoul.git.updateindex.extended.GitLineHandlerFactory"/>
+        <projectService serviceImplementation="com.github.monosoul.git.updateindex.extended.UpdateIndexLineHandlerFactory"/>
 
         <projectService serviceImplementation="com.github.monosoul.git.updateindex.extended.support.CommandInvoker"/>
 
         <projectService
                 serviceImplementation="com.github.monosoul.git.updateindex.extended.support.PresentationUpdater"/>
+
+        <vcs.changes.changesViewModifier
+                implementation="com.github.monosoul.git.updateindex.extended.changes.view.SkippedWorktreeChangesViewModifier"/>
     </extensions>
 
     <actions>
@@ -84,6 +87,12 @@
                     description="Mark file as not executable (chmod -x)"/>
             <add-to-group group-id="Git.ContextMenu" anchor="last"/>
         </group>
+        <action id="monosoul.Git.UpdateIndex.Extended.ToggleSkippedWorktreeAction"
+                class="com.github.monosoul.git.updateindex.extended.changes.view.ToggleSkippedWorktreeAction"
+                text="Show Skipped Worktree"
+                description="Show files that were marked to skip worktree">
+            <add-to-group group-id="ChangesView.ViewOptions" anchor="last"/>
+        </action>
     </actions>
 
 </idea-plugin>
