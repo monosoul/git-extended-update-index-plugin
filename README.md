@@ -23,6 +23,8 @@ It adds the support for the next subcommands:
 ![Show skipped worktree changes view element](screenshots/screenshot_4.png)
 
 ## Release History
+* 0.1.0
+  * Introduced a way to see skipped worktree files in the changes view tool window. 
 * 0.0.5
   * Run the commands in a background task (fixes the exception).
 * 0.0.4
