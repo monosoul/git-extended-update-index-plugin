@@ -61,6 +61,9 @@
 
         <projectService
                 serviceImplementation="com.github.monosoul.git.updateindex.extended.support.PresentationUpdater"/>
+
+        <vcs.changes.changesViewModifier
+                implementation="com.github.monosoul.git.updateindex.extended.changes.view.SkippedWorktreeChangesViewModifier"/>
     </extensions>
 
     <actions>
@@ -85,7 +88,7 @@
             <add-to-group group-id="Git.ContextMenu" anchor="last"/>
         </group>
         <action id="monosoul.Git.UpdateIndex.Extended.ToggleSkippedWorktreeAction"
-                class="com.github.monosoul.git.updateindex.extended.ToggleSkippedWorktreeAction"
+                class="com.github.monosoul.git.updateindex.extended.changes.view.ToggleSkippedWorktreeAction"
                 text="Show Skipped Worktree"
                 description="Show files that were marked to skip worktree">
             <add-to-group group-id="ChangesView.ViewOptions" anchor="last"/>
