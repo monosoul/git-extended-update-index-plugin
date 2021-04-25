@@ -18,6 +18,10 @@ It adds the support for the next subcommands:
 
 ![New items in the git context menu](screenshots/screenshot_2.png)
 
+![Show Skipped Worktree option](screenshots/screenshot_3.png)
+
+![Show skipped worktree changes view element](screenshots/screenshot_4.png)
+
 ## Release History
 * 0.0.5
   * Run the commands in a background task (fixes the exception).
