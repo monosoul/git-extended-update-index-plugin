@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/monosoul/git-extended-update-index-plugin.svg?branch=master)](https://travis-ci.com/monosoul/git-extended-update-index-plugin)
+[![Build Status](https://github.com/monosoul/git-extended-update-index-plugin/actions/workflows/build.yaml/badge.svg)](https://github.com/monosoul/git-extended-update-index-plugin/actions/workflows/build.yaml)
 [![codecov](https://codecov.io/gh/monosoul/git-extended-update-index-plugin/branch/master/graph/badge.svg)](https://codecov.io/gh/monosoul/git-extended-update-index-plugin)
 [![JetBrains IntelliJ Plugins](https://img.shields.io/jetbrains/plugin/v/11217)](https://plugins.jetbrains.com/plugin/11217-git-extended-update-index)
 [![JetBrains IntelliJ plugins](https://img.shields.io/jetbrains/plugin/d/11217)](https://plugins.jetbrains.com/plugin/11217-git-extended-update-index)
