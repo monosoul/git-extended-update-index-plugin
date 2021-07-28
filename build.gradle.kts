@@ -34,8 +34,8 @@ dependencies {
 tasks {
     val jacocoTestReport = "jacocoTestReport"(JacocoReport::class) {
         reports {
-            xml.isEnabled = true
-            html.isEnabled = false
+            xml.required.set(true)
+            html.required.set(false)
         }
     }
 
@@ -65,5 +65,5 @@ tasks {
 }
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
