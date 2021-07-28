@@ -24,10 +24,10 @@ intellij {
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
-    testImplementation(platform("org.junit:junit-bom:5.7.1"))
+    testImplementation(platform("org.junit:junit-bom:5.7.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
-    testImplementation("io.strikt:strikt-jvm:0.30.0")
-    testImplementation("io.mockk:mockk:1.11.0")
+    testImplementation("io.strikt:strikt-jvm:0.31.0")
+    testImplementation("io.mockk:mockk:1.12.0")
     testImplementation("org.apache.commons:commons-lang3:3.12.0")
 }
 
