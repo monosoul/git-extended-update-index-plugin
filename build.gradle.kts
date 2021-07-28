@@ -8,17 +8,17 @@ group = "com.github.monosoul"
 version = "0.1.0"
 
 plugins {
-    id("org.jetbrains.intellij") version "0.7.2"
-    kotlin("jvm") version "1.4.32"
+    id("org.jetbrains.intellij") version "1.1.4"
+    kotlin("jvm") version "1.5.20"
     jacoco
 }
 
 intellij {
-    version = "211.6693.111"
-    pluginName = "Git extended update-index"
-    updateSinceUntilBuild = true
-    sameSinceUntilBuild = false
-    setPlugins("git4idea")
+    version.set("211.6693.111")
+    pluginName.set("Git extended update-index")
+    updateSinceUntilBuild.set(true)
+    sameSinceUntilBuild.set(false)
+    plugins.set(listOf("git4idea"))
 }
 
 dependencies {
@@ -40,7 +40,7 @@ tasks {
     }
 
     patchPluginXml {
-        setUntilBuild(null)
+        untilBuild.set(null as String?)
     }
 
     "test"(Test::class) {
