@@ -1,15 +1,15 @@
 package com.github.monosoul.git.updateindex.extended.support
 
-import com.github.monosoul.git.updateindex.extended.logging.Slf4j
 import com.intellij.openapi.actionSystem.Presentation
 import com.intellij.openapi.components.Service
+import com.intellij.openapi.diagnostic.logger
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vcs.ProjectLevelVcsManager
 
 @Service
 class PresentationUpdater(private val project: Project) {
 
-    private val logger by Slf4j
+    private val logger = logger<PresentationUpdater>()
 
     operator fun invoke(presentation: Presentation) {
         val vcsManager: ProjectLevelVcsManager? = ProjectLevelVcsManager.getInstance(project)

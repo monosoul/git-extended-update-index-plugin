@@ -14,7 +14,9 @@ import com.intellij.openapi.vcs.VcsException
 import com.intellij.openapi.vcs.VcsRoot
 import com.intellij.openapi.vcs.actions.VcsContextFactory
 import com.intellij.openapi.vcs.changes.committed.MockAbstractVcs
+import com.intellij.openapi.vfs.VirtualFileManager
 import com.intellij.peer.impl.VcsContextFactoryImpl
+import git4idea.GitVcs
 import git4idea.commands.Git
 import git4idea.commands.GitCommandResult
 import git4idea.commands.GitLineHandler
@@ -56,8 +58,14 @@ internal class GetSkippedWorktreeFilesTaskTest {
     @MockK
     private lateinit var vcsManager: ProjectLevelVcsManager
 
+    @MockK
+    private lateinit var gitVcs: GitVcs
+
     @MockK(relaxed = true)
     private lateinit var gitExecutableManager: GitExecutableManager
+
+    @MockK(relaxed = true)
+    private lateinit var virtualFileManager: VirtualFileManager
 
     @MockK
     private lateinit var git: Git
@@ -71,9 +79,11 @@ internal class GetSkippedWorktreeFilesTaskTest {
         application = MockApplication(parent)
         ApplicationManager.setApplication(application, parent)
         application.registerService(git, parent)
+        application.registerService(virtualFileManager, parent)
 
         project = MockProject(null, parent)
 
+        every { vcsManager.findVcsByName(GitVcs.NAME) } returns gitVcs
         project.registerService(vcsManager, parent)
 
         application.registerService(gitExecutableManager, parent)

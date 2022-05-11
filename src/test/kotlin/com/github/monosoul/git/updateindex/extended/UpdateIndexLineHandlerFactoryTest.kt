@@ -8,6 +8,7 @@ import com.intellij.openapi.application.ApplicationManager.setApplication
 import com.intellij.openapi.util.Disposer.dispose
 import com.intellij.openapi.vcs.ProjectLevelVcsManager
 import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.openapi.vfs.VirtualFileManager
 import git4idea.GitVcs
 import git4idea.config.GitExecutable
 import git4idea.config.GitExecutableManager
@@ -23,8 +24,6 @@ import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.extension.ExtendWith
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
-import java.util.stream.Stream.generate
-import kotlin.streams.toList
 
 @ExtendWith(MockKExtension::class)
 internal class UpdateIndexLineHandlerFactoryTest {
@@ -48,6 +47,9 @@ internal class UpdateIndexLineHandlerFactoryTest {
     @MockK
     private lateinit var gitExecutable: GitExecutable
 
+    @MockK(relaxed = true)
+    private lateinit var virtualFileManager: VirtualFileManager
+
     @MockK
     private lateinit var gitVcs: GitVcs
 
@@ -58,6 +60,7 @@ internal class UpdateIndexLineHandlerFactoryTest {
         application = MockApplication(parent)
         setApplication(application, parent)
         application.registerService(gitExecutableManager, parent)
+        application.registerService(virtualFileManager, parent)
 
         project = MockProject(null, parent)
         project.registerService(vcsManager, parent)
@@ -98,7 +101,7 @@ internal class UpdateIndexLineHandlerFactoryTest {
         root to mockVirtualFiles().onEach { it.parent = root }
     }
 
-    private fun mockVirtualFiles() = generate { MockVirtualFile(randomAlphabetic(LIMIT)) }
-        .limit(nextInt(1, LIMIT))
+    private fun mockVirtualFiles() = generateSequence { MockVirtualFile(randomAlphabetic(LIMIT)) }
+        .take(nextInt(1, LIMIT))
         .toList()
 }

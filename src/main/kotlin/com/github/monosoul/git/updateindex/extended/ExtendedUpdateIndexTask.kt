@@ -1,6 +1,6 @@
 package com.github.monosoul.git.updateindex.extended
 
-import com.github.monosoul.git.updateindex.extended.logging.Slf4j
+import com.intellij.openapi.diagnostic.logger
 import com.intellij.openapi.progress.ProgressIndicator
 import com.intellij.openapi.progress.Task
 import com.intellij.openapi.project.Project
@@ -17,7 +17,7 @@ class ExtendedUpdateIndexTask(
     val command: ExtendedUpdateIndexCommand
 ) : Task.Backgroundable(project, "Running git update-index") {
 
-    private val logger by Slf4j
+    private val logger = logger<ExtendedUpdateIndexTask>()
 
     override fun run(indicator: ProgressIndicator) {
         project.run {
@@ -34,7 +34,7 @@ class ExtendedUpdateIndexTask(
     private fun GitLineHandler.runAndLog() = run(Git.getInstance()::runCommand)
         .takeUnless(GitCommandResult::success)
         ?.let(GitCommandResult::getErrorOutput)
-        ?.forEach(logger::error)
+        ?.forEach(logger::warn)
 
     private val Project.updateIndexLineHandlerFactory: UpdateIndexLineHandlerFactory
         get() = getService(UpdateIndexLineHandlerFactory::class.java)

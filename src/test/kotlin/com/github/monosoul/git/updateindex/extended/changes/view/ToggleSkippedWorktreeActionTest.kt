@@ -4,7 +4,7 @@ import com.github.monosoul.git.updateindex.extended.TestDisposable
 import com.github.monosoul.git.updateindex.extended.changes.view.Constants.PROPERTY
 import com.github.monosoul.git.updateindex.extended.registerService
 import com.github.monosoul.git.updateindex.extended.support.PresentationUpdater
-import com.intellij.ide.util.AppPropertiesComponentImpl
+import com.intellij.ide.util.AppPropertyService
 import com.intellij.ide.util.PropertiesComponent
 import com.intellij.mock.MockApplication
 import com.intellij.mock.MockProject
@@ -30,13 +30,14 @@ import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 import strikt.assertions.isFalse
 
+@Suppress("UnstableApiUsage")
 @ExtendWith(MockKExtension::class)
 internal class ToggleSkippedWorktreeActionTest {
 
     private lateinit var parent: TestDisposable
     private lateinit var application: MockApplication
     private lateinit var project: MockProject
-    private lateinit var propertiesComponent: AppPropertiesComponentImpl
+    private lateinit var propertiesComponent: AppPropertyService
 
     @MockK(relaxUnitFun = true)
     private lateinit var presentationUpdater: PresentationUpdater
@@ -55,7 +56,7 @@ internal class ToggleSkippedWorktreeActionTest {
 
         project = MockProject(null, parent)
 
-        propertiesComponent = AppPropertiesComponentImpl()
+        propertiesComponent = AppPropertyService()
         application.registerService<PropertiesComponent>(propertiesComponent, parent)
 
         project.registerService<ChangesViewI>(changesViewManager, parent)
