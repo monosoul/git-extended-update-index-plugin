@@ -23,8 +23,6 @@ import io.mockk.verifyAll
 import io.mockk.verifyOrder
 import org.apache.commons.lang3.RandomStringUtils
 import org.apache.commons.lang3.RandomUtils.nextInt
-import org.apache.log4j.Appender
-import org.apache.log4j.Level.ERROR
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.extension.ExtendWith
@@ -32,9 +30,6 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ArgumentsSource
 import strikt.api.expectThat
 import strikt.assertions.containsExactlyInAnyOrder
-import strikt.assertions.isEqualTo
-import java.util.stream.Stream.generate
-import kotlin.streams.toList
 
 @ExtendWith(MockKExtension::class)
 internal class ExtendedUpdateIndexTaskTest {
@@ -42,8 +37,6 @@ internal class ExtendedUpdateIndexTaskTest {
     private lateinit var parent: TestDisposable
     private lateinit var application: MockApplication
     private lateinit var project: MockProject
-
-    private lateinit var appender: Appender
 
     @MockK
     private lateinit var git: Git
@@ -75,8 +68,6 @@ internal class ExtendedUpdateIndexTaskTest {
         project.registerService(vcsManager, parent)
         project.registerService(dirtyScopeManager, parent)
         project.registerService(updateIndexLineHandlerFactory, parent)
-
-        appender = mockedAppender<ExtendedUpdateIndexTask>()
 
         every { updateIndexLineHandlerFactory.invoke(any(), any(), any()) } returns gitLineHandler
         every { git.runCommand(any<GitLineHandler>()) } returns gitCommandResult
@@ -121,7 +112,6 @@ internal class ExtendedUpdateIndexTaskTest {
 
         every { gitCommandResult.success() } returns true
 
-
         ExtendedUpdateIndexTask(project, files, command).run(indicator)
 
         verify(exactly = files.size) {
@@ -165,12 +155,6 @@ internal class ExtendedUpdateIndexTaskTest {
             git.runCommand(gitLineHandler)
             gitCommandResult.success()
             gitCommandResult.errorOutput
-            appender.doAppend(withArg {
-                expectThat(it) {
-                    get { message } isEqualTo error
-                    get { getLevel() } isEqualTo ERROR
-                }
-            })
         }
         verify(exactly = files.size) {
             dirtyScopeManager.fileDirty(any<VirtualFile>())
@@ -192,8 +176,8 @@ internal class ExtendedUpdateIndexTaskTest {
         )
 
         companion object {
-            private fun virtualFileList() = generate { mockk<VirtualFile>() }
-                .limit(nextInt(1, LIMIT))
+            private fun virtualFileList() = generateSequence { mockk<VirtualFile>() }
+                .take(nextInt(1, LIMIT))
                 .toList()
         }
     }

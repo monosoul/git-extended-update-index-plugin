@@ -1,6 +1,7 @@
 package com.github.monosoul.git.updateindex.extended.changes.view
 
 import com.github.monosoul.git.updateindex.extended.changes.view.Constants.SKIPPED_FILE
+import com.intellij.externalProcessAuthHelper.AuthenticationMode.NONE
 import com.intellij.openapi.progress.ProgressIndicator
 import com.intellij.openapi.progress.Task.WithResult
 import com.intellij.openapi.project.Project
@@ -11,7 +12,6 @@ import com.intellij.openapi.vcs.VcsRoot
 import com.intellij.vcsUtil.VcsUtil
 import git4idea.GitUtil
 import git4idea.commands.Git
-import git4idea.commands.GitAuthenticationMode.NONE
 import git4idea.commands.GitCommand.LS_FILES
 import git4idea.commands.GitCommandResult
 import git4idea.commands.GitLineHandler

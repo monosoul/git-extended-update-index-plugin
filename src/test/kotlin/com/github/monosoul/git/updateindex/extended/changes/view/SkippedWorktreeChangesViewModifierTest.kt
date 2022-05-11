@@ -5,7 +5,7 @@ import com.github.monosoul.git.updateindex.extended.LIMIT
 import com.github.monosoul.git.updateindex.extended.TestDisposable
 import com.github.monosoul.git.updateindex.extended.changes.view.Constants.PROPERTY
 import com.github.monosoul.git.updateindex.extended.registerService
-import com.intellij.ide.util.AppPropertiesComponentImpl
+import com.intellij.ide.util.AppPropertyService
 import com.intellij.ide.util.PropertiesComponent
 import com.intellij.mock.MockApplication
 import com.intellij.mock.MockLocalFileSystem
@@ -42,13 +42,14 @@ import strikt.assertions.map
 import kotlin.random.Random
 import kotlin.random.nextInt
 
+@Suppress("UnstableApiUsage")
 @ExtendWith(MockKExtension::class)
 internal class SkippedWorktreeChangesViewModifierTest {
 
     private lateinit var parent: TestDisposable
     private lateinit var application: MockApplication
     private lateinit var project: MockProject
-    private lateinit var propertiesComponent: AppPropertiesComponentImpl
+    private lateinit var propertiesComponent: AppPropertyService
     private lateinit var localFileSystem: MockLocalFileSystem
 
     @MockK(relaxUnitFun = true)
@@ -68,7 +69,7 @@ internal class SkippedWorktreeChangesViewModifierTest {
 
         project = MockProject(null, parent)
 
-        propertiesComponent = AppPropertiesComponentImpl()
+        propertiesComponent = AppPropertyService()
         application.registerService<PropertiesComponent>(propertiesComponent, parent)
 
         application.registerService(progressManager, parent)
