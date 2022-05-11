@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>git-extended-update-index</id>
     <name>Git extended update-index</name>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
     <vendor email="kloz.klaud@gmail.com" url="https://github.com/monosoul/git-extended-update-index-plugin">
         Andrei Nevedomskii
     </vendor>
@@ -18,6 +18,11 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      <b>Release 0.1.1:</b>
+      <ul>
+        <li>Use the latest IntelliJ API.</li>
+      </ul>
+      <br>
       <b>Release 0.1.0:</b>
       <ul>
         <li>introduced a way to see skipped worktree files in the changes view tool window.</li>
