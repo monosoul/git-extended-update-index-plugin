@@ -8,8 +8,8 @@ group = "com.github.monosoul"
 version = "0.1.1-SNAPSHOT"
 
 plugins {
-    id("org.jetbrains.intellij") version "1.1.4"
-    kotlin("jvm") version "1.5.20"
+    id("org.jetbrains.intellij") version "1.5.3"
+    kotlin("jvm") version "1.6.21"
     jacoco
 }
 
@@ -24,10 +24,10 @@ intellij {
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
-    testImplementation(platform("org.junit:junit-bom:5.7.2"))
+    testImplementation(platform("org.junit:junit-bom:5.8.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
-    testImplementation("io.strikt:strikt-jvm:0.31.0")
-    testImplementation("io.mockk:mockk:1.12.0")
+    testImplementation("io.strikt:strikt-jvm:0.34.1")
+    testImplementation("io.mockk:mockk:1.12.3")
     testImplementation("org.apache.commons:commons-lang3:3.12.0")
 }
 
