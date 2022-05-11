@@ -2,7 +2,6 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
 import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
 import org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED
 import org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED
-import org.gradle.jvm.toolchain.JvmVendorSpec.ADOPTIUM
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 group = "com.github.monosoul"
@@ -30,13 +29,6 @@ dependencies {
     testImplementation("io.strikt:strikt-jvm:0.34.1")
     testImplementation("io.mockk:mockk:1.12.3")
     testImplementation("org.apache.commons:commons-lang3:3.12.0")
-}
-
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(11))
-        vendor.set(ADOPTIUM)
-    }
 }
 
 tasks {
