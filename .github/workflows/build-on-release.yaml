@@ -1,0 +1,22 @@
+name: Build the jar on release
+on:
+  release:
+    types: [created]
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+      - name: Assemble the jar
+        run: ./gradlew assemble
+      - uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: 'build/distributions/Git extended update-index-*.zip'
+          asset_name: 'Git extended update-index-$tag.zip'
+          tag: ${{ github.ref }}
