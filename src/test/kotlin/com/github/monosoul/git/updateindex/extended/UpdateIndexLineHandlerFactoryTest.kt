@@ -1,5 +1,6 @@
 package com.github.monosoul.git.updateindex.extended
 
+import com.intellij.externalProcessAuthHelper.AuthenticationMode.NONE
 import com.intellij.mock.MockApplication
 import com.intellij.mock.MockProject
 import com.intellij.mock.MockVirtualFile
@@ -8,7 +9,6 @@ import com.intellij.openapi.util.Disposer.dispose
 import com.intellij.openapi.vcs.ProjectLevelVcsManager
 import com.intellij.openapi.vfs.VirtualFile
 import git4idea.GitVcs
-import git4idea.commands.GitAuthenticationMode.NONE
 import git4idea.config.GitExecutable
 import git4idea.config.GitExecutableManager
 import git4idea.config.GitVersion
@@ -92,13 +92,13 @@ internal class UpdateIndexLineHandlerFactoryTest {
     }
 
     private fun buildExpected(command: ExtendedUpdateIndexCommand, files: List<VirtualFile>) =
-            "git update-index ${command.value} " + files.joinToString(" ", transform = VirtualFile::getName)
+        "git update-index ${command.value} " + files.joinToString(" ", transform = VirtualFile::getName)
 
     private fun vcsRootToFileListPair() = MockVirtualFile(true, randomAlphabetic(LIMIT)).let { root ->
         root to mockVirtualFiles().onEach { it.parent = root }
     }
 
     private fun mockVirtualFiles() = generate { MockVirtualFile(randomAlphabetic(LIMIT)) }
-            .limit(nextInt(1, LIMIT))
-            .toList()
+        .limit(nextInt(1, LIMIT))
+        .toList()
 }
