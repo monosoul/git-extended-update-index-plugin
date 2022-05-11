@@ -18,5 +18,5 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: 'build/distributions/Git extended update-index-*.zip'
-          asset_name: 'Git extended update-index-$tag.zip'
+          file_glob: true
           tag: ${{ github.ref }}
