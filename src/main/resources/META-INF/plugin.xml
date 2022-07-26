@@ -18,6 +18,11 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      <b>Release 0.1.2:</b>
+      <ul>
+        <li>Use the latest IntelliJ API.</li>
+      </ul>
+      <br>
       <b>Release 0.1.1:</b>
       <ul>
         <li>Use the latest IntelliJ API.</li>
@@ -59,7 +64,7 @@
     ]]>
     </change-notes>
 
-    <idea-version since-build="221.5080.210"/>
+    <idea-version since-build="222.3345.118"/>
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.vcs</depends>
     <depends>Git4Idea</depends>

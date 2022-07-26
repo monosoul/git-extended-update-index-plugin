@@ -8,13 +8,13 @@ group = "com.github.monosoul"
 version = "0.1.2-SNAPSHOT"
 
 plugins {
-    id("org.jetbrains.intellij") version "1.5.3"
-    kotlin("jvm") version "1.6.21"
+    id("org.jetbrains.intellij") version "1.7.0"
+    kotlin("jvm") version "1.7.10"
     jacoco
 }
 
 intellij {
-    version.set("221.5080.210")
+    version.set("222.3345.118")
     pluginName.set("Git extended update-index")
     updateSinceUntilBuild.set(true)
     sameSinceUntilBuild.set(false)
@@ -26,8 +26,9 @@ dependencies {
 
     testImplementation(platform("org.junit:junit-bom:5.8.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation("org.junit.platform:junit-platform-launcher")
     testImplementation("io.strikt:strikt-jvm:0.34.1")
-    testImplementation("io.mockk:mockk:1.12.3")
+    testImplementation("io.mockk:mockk:1.12.4")
     testImplementation("org.apache.commons:commons-lang3:3.12.0")
 }
 
@@ -45,6 +46,13 @@ tasks {
 
     "test"(Test::class) {
         useJUnitPlatform()
+        jvmArgs(
+            "--add-exports=java.base/sun.nio.ch=ALL-UNNAMED",
+            "--add-opens=java.base/java.lang=ALL-UNNAMED",
+            "--add-opens=java.base/java.lang.reflect=ALL-UNNAMED",
+            "--add-opens=java.base/java.io=ALL-UNNAMED",
+            "--add-exports=jdk.unsupported/sun.misc=ALL-UNNAMED"
+        )
 
         testLogging {
             events = setOf(PASSED, SKIPPED, FAILED)
@@ -58,7 +66,7 @@ tasks {
 
     withType<KotlinCompile> {
         kotlinOptions {
-            jvmTarget = "11"
+            jvmTarget = "17"
             freeCompilerArgs = listOf("-Xjsr305=strict")
         }
     }
