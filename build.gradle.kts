@@ -26,6 +26,7 @@ dependencies {
 
     testImplementation(platform("org.junit:junit-bom:5.8.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation("org.junit.platform:junit-platform-launcher")
     testImplementation("io.strikt:strikt-jvm:0.34.1")
     testImplementation("io.mockk:mockk:1.12.4")
     testImplementation("org.apache.commons:commons-lang3:3.12.0")
@@ -45,6 +46,13 @@ tasks {
 
     "test"(Test::class) {
         useJUnitPlatform()
+        jvmArgs(
+            "--add-exports=java.base/sun.nio.ch=ALL-UNNAMED",
+            "--add-opens=java.base/java.lang=ALL-UNNAMED",
+            "--add-opens=java.base/java.lang.reflect=ALL-UNNAMED",
+            "--add-opens=java.base/java.io=ALL-UNNAMED",
+            "--add-exports=jdk.unsupported/sun.misc=ALL-UNNAMED"
+        )
 
         testLogging {
             events = setOf(PASSED, SKIPPED, FAILED)
@@ -58,7 +66,7 @@ tasks {
 
     withType<KotlinCompile> {
         kotlinOptions {
-            jvmTarget = "11"
+            jvmTarget = "17"
             freeCompilerArgs = listOf("-Xjsr305=strict")
         }
     }
