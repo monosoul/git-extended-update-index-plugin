@@ -14,7 +14,7 @@ plugins {
 }
 
 intellij {
-    version.set("221.5080.210")
+    version.set("222.3345.118")
     pluginName.set("Git extended update-index")
     updateSinceUntilBuild.set(true)
     sameSinceUntilBuild.set(false)
