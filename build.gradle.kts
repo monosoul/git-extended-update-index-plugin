@@ -24,7 +24,7 @@ intellij {
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
-    testImplementation(platform("org.junit:junit-bom:5.8.2"))
+    testImplementation(platform("org.junit:junit-bom:5.9.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.junit.platform:junit-platform-launcher")
     testImplementation("io.strikt:strikt-jvm:0.34.1")
