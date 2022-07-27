@@ -33,18 +33,20 @@ dependencies {
 }
 
 tasks {
-    val jacocoTestReport = "jacocoTestReport"(JacocoReport::class) {
+    jacocoTestReport  {
         reports {
             xml.required.set(true)
             html.required.set(false)
         }
+
+        dependsOn(test)
     }
 
     patchPluginXml {
         untilBuild.set(null as String?)
     }
 
-    "test"(Test::class) {
+    test {
         useJUnitPlatform()
         jvmArgs(
             "--add-opens=java.base/java.lang=ALL-UNNAMED",
