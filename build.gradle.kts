@@ -28,7 +28,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.junit.platform:junit-platform-launcher")
     testImplementation("io.strikt:strikt-jvm:0.34.1")
-    testImplementation("io.mockk:mockk:1.12.4")
+    testImplementation("io.mockk:mockk:1.12.5")
     testImplementation("org.apache.commons:commons-lang3:3.12.0")
 }
 
