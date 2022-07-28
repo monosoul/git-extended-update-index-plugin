@@ -1,4 +1,3 @@
-import kotlinx.kover.api.CoverageEngine.JACOCO
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
 import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
 import org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED
@@ -15,8 +14,6 @@ plugins {
 }
 
 kover {
-    coverageEngine.set(JACOCO)
-    jacocoEngineVersion.set("0.8.8")
     generateReportOnCheck = true
 }
 
