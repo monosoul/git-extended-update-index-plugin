@@ -1,3 +1,4 @@
+import kotlinx.kover.api.CoverageEngine.JACOCO
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
 import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
 import org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED
@@ -10,7 +11,13 @@ version = "0.1.2"
 plugins {
     id("org.jetbrains.intellij") version "1.5.3"
     kotlin("jvm") version "1.7.10"
-    jacoco
+    id("org.jetbrains.kotlinx.kover") version "0.5.0"
+}
+
+kover {
+    coverageEngine.set(JACOCO)
+    jacocoEngineVersion.set("0.8.8")
+    generateReportOnCheck = true
 }
 
 intellij {
@@ -33,17 +40,12 @@ dependencies {
 }
 
 tasks {
-    jacocoTestReport  {
-        reports {
-            xml.required.set(true)
-            html.required.set(false)
-        }
-
-        dependsOn(test)
-    }
-
     patchPluginXml {
         untilBuild.set(null as String?)
+    }
+
+    koverHtmlReport {
+        isEnabled = false
     }
 
     test {
@@ -58,10 +60,6 @@ tasks {
             events = setOf(PASSED, SKIPPED, FAILED)
             exceptionFormat = FULL
         }
-    }
-
-    "check" {
-        dependsOn(jacocoTestReport)
     }
 
     withType<KotlinCompile> {
