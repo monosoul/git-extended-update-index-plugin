@@ -5,7 +5,6 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 group = "com.github.monosoul"
-version = "0.1.2"
 
 plugins {
     id("org.jetbrains.intellij") version "1.7.0"
@@ -37,6 +36,12 @@ dependencies {
 }
 
 tasks {
+    publishPlugin {
+        token.set(
+            project.findProperty("intellij.publish.token") as String?
+        )
+    }
+
     patchPluginXml {
         untilBuild.set("")
     }

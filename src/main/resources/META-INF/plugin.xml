@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>git-extended-update-index</id>
     <name>Git extended update-index</name>
-    <version>0.1.2</version>
+    <version>SNAPSHOT</version>
     <vendor email="kloz.klaud@gmail.com" url="https://github.com/monosoul/git-extended-update-index-plugin">
         Andrei Nevedomskii
     </vendor>
@@ -18,53 +18,11 @@
     ]]></description>
 
     <change-notes><![CDATA[
-      <b>Release 0.1.2:</b>
-      <ul>
-        <li>Use the latest IntelliJ API.</li>
-      </ul>
-      <br>
-      <b>Release 0.1.1:</b>
-      <ul>
-        <li>Use the latest IntelliJ API.</li>
-      </ul>
-      <br>
-      <b>Release 0.1.0:</b>
-      <ul>
-        <li>introduced a way to see skipped worktree files in the changes view tool window.</li>
-      </ul>
-      <br>
-      <b>Release 0.0.5:</b>
-      <ul>
-        <li>run the commands in a background task (fixes the exception).</li>
-      </ul>
-      <br>
-      <b>Release 0.0.4:</b>
-      <ul>
-        <li>switched to modern IntelliJ API;</li>
-        <li>set Java 11 as compile target;</li>
-        <li>use the latest Kotlin compiler.</li>
-      </ul>
-      <br>
-      <b>Release 0.0.3:</b>
-      <ul>
-        <li>rewrote the plugin in Kotlin;</li>
-        <li>switched to modern IntelliJ API;</li>
-        <li>added a plugin icon.</li>
-      </ul>
-      <br>
-      <b>Release 0.0.2:</b>
-      <ul>
-        <li>Update dependencies to make the plugin available on all platforms.</li>
-      </ul>
-      <br>
-      <b>Release 0.0.1:</b>
-      <ul>
-        <li>Initial release.</li>
-      </ul>
+       <a href="https://github.com/monosoul/git-extended-update-index-plugin/releases">Release history on GitHub</a>
     ]]>
     </change-notes>
 
-    <idea-version since-build="222.3345.118"/>
+    <idea-version since-build="SNAPSHOT"/>
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.vcs</depends>
     <depends>Git4Idea</depends>
