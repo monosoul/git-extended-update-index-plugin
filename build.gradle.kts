@@ -40,6 +40,7 @@ tasks {
         token.set(
             project.findProperty("intellij.publish.token") as String?
         )
+        channels.set(listOf("stable"))
     }
 
     patchPluginXml {
