@@ -1,20 +1,36 @@
 name: Build the jar on release
+
 on:
   release:
-    types: [created]
+    types: [ created ]
+
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
+
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
-          java-version: '17'
           distribution: 'temurin'
-      - name: Assemble the jar
-        run: ./gradlew assemble
-      - uses: svenstaro/upload-release-action@v2
+          java-version: '17'
+
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+
+      - name: Publish plugin
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: |
+            -Pversion=${{ steps.get_version.outputs.VERSION }}
+            -Pintellij.publish.token=${{ secrets.INTELLIJ_PUBLISH_TOKEN }}
+            build publishPlugins
+
+      - name: Attach artifacts to the release
+        uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: 'build/distributions/Git extended update-index-*.zip'
