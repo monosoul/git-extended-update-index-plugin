@@ -38,7 +38,7 @@ dependencies {
 
 tasks {
     patchPluginXml {
-        untilBuild.set(null as String?)
+        untilBuild.set("")
     }
 
     koverHtmlReport {
