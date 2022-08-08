@@ -7,13 +7,9 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 group = "com.github.monosoul"
 
 plugins {
-    id("org.jetbrains.intellij") version "1.7.0"
+    id("org.jetbrains.intellij") version "1.8.0"
     kotlin("jvm") version "1.7.10"
-    id("org.jetbrains.kotlinx.kover") version "0.5.1"
-}
-
-kover {
-    generateReportOnCheck = true
+    jacoco
 }
 
 intellij {
@@ -36,6 +32,14 @@ dependencies {
 }
 
 tasks {
+    val jacocoTestReport = "jacocoTestReport"(JacocoReport::class) {
+        reports {
+            xml.required.set(true)
+            html.required.set(false)
+        }
+        shouldRunAfter(test)
+    }
+
     publishPlugin {
         token.set(
             project.findProperty("intellij.publish.token") as String?
@@ -45,10 +49,6 @@ tasks {
 
     patchPluginXml {
         untilBuild.set("")
-    }
-
-    koverHtmlReport {
-        isEnabled = false
     }
 
     test {
@@ -63,6 +63,10 @@ tasks {
             events = setOf(PASSED, SKIPPED, FAILED)
             exceptionFormat = FULL
         }
+    }
+
+    check {
+        dependsOn(jacocoTestReport)
     }
 
     withType<KotlinCompile> {
