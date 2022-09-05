@@ -7,7 +7,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 group = "com.github.monosoul"
 
 plugins {
-    id("org.jetbrains.intellij") version "1.8.1"
+    id("org.jetbrains.intellij") version "1.9.0"
     kotlin("jvm") version "1.7.10"
     jacoco
 }
