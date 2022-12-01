@@ -27,7 +27,12 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.junit.platform:junit-platform-launcher")
     testImplementation("io.strikt:strikt-jvm:0.34.1")
-    testImplementation("io.mockk:mockk-jvm:1.13.3")
+    testImplementation("io.mockk:mockk-jvm") {
+        version {
+            strictly("1.13.1")
+            because("versions higher than 1.13.1 cause failures")
+        }
+    }
     testImplementation("org.apache.commons:commons-lang3:3.12.0")
 }
 
