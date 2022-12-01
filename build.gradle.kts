@@ -9,7 +9,13 @@ group = "com.github.monosoul"
 plugins {
     id("org.jetbrains.intellij") version "1.10.0"
     kotlin("jvm") version "1.7.22"
-    jacoco
+    id("org.jetbrains.kotlinx.kover") version "0.6.1"
+}
+
+kover {
+    xmlReport {
+        onCheck.set(true)
+    }
 }
 
 intellij {
@@ -37,14 +43,6 @@ dependencies {
 }
 
 tasks {
-    val jacocoTestReport = "jacocoTestReport"(JacocoReport::class) {
-        reports {
-            xml.required.set(true)
-            html.required.set(false)
-        }
-        shouldRunAfter(test)
-    }
-
     publishPlugin {
         token.set(
             project.findProperty("intellij.publish.token") as String?
@@ -68,10 +66,6 @@ tasks {
             events = setOf(PASSED, SKIPPED, FAILED)
             exceptionFormat = FULL
         }
-    }
-
-    check {
-        dependsOn(jacocoTestReport)
     }
 
     withType<KotlinCompile> {
