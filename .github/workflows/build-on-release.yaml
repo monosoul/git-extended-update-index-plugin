@@ -27,7 +27,7 @@ jobs:
           arguments: |
             -Pversion=${{ steps.get_version.outputs.VERSION }}
             -Pintellij.publish.token=${{ secrets.INTELLIJ_PUBLISH_TOKEN }}
-            build publishPlugins
+            build publishPlugin
 
       - name: Attach artifacts to the release
         uses: svenstaro/upload-release-action@v2
