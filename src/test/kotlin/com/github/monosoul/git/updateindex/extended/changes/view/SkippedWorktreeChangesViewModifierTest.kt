@@ -15,10 +15,12 @@ import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.util.Disposer.dispose
 import com.intellij.openapi.vcs.FilePath
 import com.intellij.openapi.vcs.LocalFilePath
+import com.intellij.openapi.vcs.changes.ui.ChangesBrowserNode
 import com.intellij.openapi.vcs.changes.ui.ChangesViewModelBuilder
 import com.intellij.openapi.vcs.changes.ui.NoneChangesGroupingFactory
 import com.intellij.openapi.vcs.changes.ui.TreeModelBuilder
 import com.intellij.openapi.vfs.LocalFileSystem
+import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.vfs.VirtualFileManager
 import io.mockk.Called
 import io.mockk.every
@@ -127,13 +129,18 @@ internal class SkippedWorktreeChangesViewModifierTest {
             get { root }.isNotNull()
             get { getChildCount(root) } isEqualTo 1
             get { getChild(root, 0) }.isA<ChangesBrowserSkippedWorktreeNode>() and {
-                get { allFilesUnder }
-                    .hasSize(files.size)
+                get { listAllFiles() }.hasSize(files.size)
                     .map { it.path }
                     .containsExactlyInAnyOrder(files.map { "/${it.path}" })
             }
         }
     }
+
+    private fun ChangesBrowserSkippedWorktreeNode.listAllFiles() = traverse()
+        .filter(ChangesBrowserNode<*>::isLeaf)
+        .map(ChangesBrowserNode<*>::getUserObject)
+        .filter(VirtualFile::class.java)
+        .toList()
 
     private class FilesArgumentSource : AbstractMultiArgumentsSource({
         List<FilePath>(Random.nextInt(1..10)) {
