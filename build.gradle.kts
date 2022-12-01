@@ -7,7 +7,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 group = "com.github.monosoul"
 
 plugins {
-    id("org.jetbrains.intellij") version "1.10.0"
+    id("org.jetbrains.intellij") version "1.11.0-SNAPSHOT"
     kotlin("jvm") version "1.7.22"
     id("org.jetbrains.kotlinx.kover") version "0.6.1"
 }
@@ -19,11 +19,11 @@ kover {
 }
 
 intellij {
-    version.set("222.3345.118")
+    version.set("223.7571.182")
     pluginName.set("Git extended update-index")
     updateSinceUntilBuild.set(true)
     sameSinceUntilBuild.set(false)
-    plugins.set(listOf("git4idea"))
+    plugins.set(listOf("vcs-git"))
 }
 
 dependencies {
@@ -33,12 +33,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.junit.platform:junit-platform-launcher")
     testImplementation("io.strikt:strikt-jvm:0.34.1")
-    testImplementation("io.mockk:mockk-jvm") {
-        version {
-            strictly("1.13.1")
-            because("versions higher than 1.13.1 cause failures")
-        }
-    }
+    testImplementation("io.mockk:mockk-jvm:1.13.3")
     testImplementation("org.apache.commons:commons-lang3:3.12.0")
 }
 

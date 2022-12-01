@@ -45,7 +45,7 @@ internal class UpdateIndexLineHandlerFactoryTest {
     private lateinit var vcsManager: ProjectLevelVcsManager
 
     @MockK
-    private lateinit var gitExecutable: GitExecutable
+    private lateinit var gitExecutable: GitExecutable.Local
 
     @MockK(relaxed = true)
     private lateinit var virtualFileManager: VirtualFileManager
