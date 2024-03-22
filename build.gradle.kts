@@ -7,9 +7,9 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 group = "com.github.monosoul"
 
 plugins {
-    id("org.jetbrains.intellij") version "1.13.3"
-    kotlin("jvm") version "1.8.20"
-    id("org.jetbrains.kotlinx.kover") version "0.6.1"
+    id("org.jetbrains.intellij") version "1.17.2"
+    kotlin("jvm") version "1.9.23"
+    id("org.jetbrains.kotlinx.kover") version "0.7.6"
 }
 
 kover {
@@ -29,12 +29,12 @@ intellij {
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
-    testImplementation(platform("org.junit:junit-bom:5.9.2"))
+    testImplementation(platform("org.junit:junit-bom:5.10.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.junit.platform:junit-platform-launcher")
     testImplementation("io.strikt:strikt-jvm:0.34.1")
-    testImplementation("io.mockk:mockk-jvm:1.13.5")
-    testImplementation("org.apache.commons:commons-lang3:3.12.0")
+    testImplementation("io.mockk:mockk-jvm:1.13.10")
+    testImplementation("org.apache.commons:commons-lang3:3.14.0")
 }
 
 tasks {
