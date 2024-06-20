@@ -23,17 +23,16 @@ jobs:
           distribution: 'temurin'
 
       - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@ccb4328a959376b642e027874838f60f8e596de3
+        uses: gradle/actions/wrapper-validation@v3
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
 
       - name: Assemble the jar
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: assemble
+        run: ./gradlew assemble
 
       - name: Run tests
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: check koverXmlReport
+        run: ./gradlew check koverXmlReport
 
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v3
