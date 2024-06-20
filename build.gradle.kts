@@ -7,7 +7,7 @@ group = "com.github.monosoul"
 
 plugins {
     id("org.jetbrains.intellij") version "1.17.4"
-    kotlin("jvm") version "1.9.24"
+    kotlin("jvm") version "2.0.0"
     id("org.jetbrains.kotlinx.kover") version "0.8.1"
 }
 
