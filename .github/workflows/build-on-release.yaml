@@ -2,7 +2,7 @@ name: Build the jar on release
 
 on:
   release:
-    types: [ created ]
+    types: [ published ]
 
 jobs:
   release:
@@ -16,16 +16,14 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-
-      - name: Get the version
-        id: get_version
-        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
 
       - name: Publish plugin
         uses: gradle/gradle-build-action@v2
         with:
           arguments: |
-            -Pversion=${{ env.RELEASE_VERSION }}
+            -Pversion=${{ github.event.release.tag_name }}
             -Pintellij.publish.token=${{ secrets.INTELLIJ_PUBLISH_TOKEN }}
             build publishPlugin
 
