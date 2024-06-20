@@ -2,19 +2,19 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
 import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
 import org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED
 import org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 group = "com.github.monosoul"
 
 plugins {
-    id("org.jetbrains.intellij") version "1.11.0-SNAPSHOT"
-    kotlin("jvm") version "1.7.22"
-    id("org.jetbrains.kotlinx.kover") version "0.6.1"
+    id("org.jetbrains.intellij") version "1.17.4"
+    kotlin("jvm") version "1.9.24"
+    id("org.jetbrains.kotlinx.kover") version "0.8.1"
 }
 
-kover {
-    xmlReport {
-        onCheck.set(true)
+kotlin {
+    jvmToolchain(17)
+    compilerOptions {
+        freeCompilerArgs = listOf("-Xjsr305=strict")
     }
 }
 
@@ -27,14 +27,12 @@ intellij {
 }
 
 dependencies {
-    implementation(kotlin("stdlib-jdk8"))
-
-    testImplementation(platform("org.junit:junit-bom:5.9.1"))
+    testImplementation(platform("org.junit:junit-bom:5.10.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.junit.platform:junit-platform-launcher")
     testImplementation("io.strikt:strikt-jvm:0.34.1")
-    testImplementation("io.mockk:mockk-jvm:1.13.3")
-    testImplementation("org.apache.commons:commons-lang3:3.12.0")
+    testImplementation("io.mockk:mockk:1.13.11")
+    testImplementation("org.apache.commons:commons-lang3:3.14.0")
 }
 
 tasks {
@@ -60,13 +58,6 @@ tasks {
         testLogging {
             events = setOf(PASSED, SKIPPED, FAILED)
             exceptionFormat = FULL
-        }
-    }
-
-    withType<KotlinCompile> {
-        kotlinOptions {
-            jvmTarget = "17"
-            freeCompilerArgs = listOf("-Xjsr305=strict")
         }
     }
 }
