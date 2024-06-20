@@ -41,5 +41,8 @@ jobs:
           check_name: JUnit Test Report
           report_paths: '**/build/test-results/**/TEST-*.xml'
 
-      - name: Publish Coverage Report
-        uses: codecov/codecov-action@v3
+      - name: Coverage Report
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
