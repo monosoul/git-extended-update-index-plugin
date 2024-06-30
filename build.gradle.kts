@@ -8,7 +8,7 @@ group = "com.github.monosoul"
 plugins {
     id("org.jetbrains.intellij") version "1.17.4"
     kotlin("jvm") version "1.9.24"
-    id("org.jetbrains.kotlinx.kover") version "0.8.1"
+    id("org.jetbrains.kotlinx.kover") version "0.8.2"
 }
 
 kotlin {
@@ -27,10 +27,10 @@ intellij {
 }
 
 dependencies {
-    testImplementation(platform("org.junit:junit-bom:5.10.2"))
+    testImplementation(platform("org.junit:junit-bom:5.10.3"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.junit.platform:junit-platform-launcher")
-    testImplementation("io.strikt:strikt-jvm:0.34.1")
+    testImplementation("io.strikt:strikt-jvm:0.35.1")
     testImplementation("io.mockk:mockk:1.13.11")
     testImplementation("org.apache.commons:commons-lang3:3.14.0")
 }
