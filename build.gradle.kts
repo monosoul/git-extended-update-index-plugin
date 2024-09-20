@@ -2,11 +2,12 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
 import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
 import org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED
 import org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED
+import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 
 group = "com.github.monosoul"
 
 plugins {
-    id("org.jetbrains.intellij") version "1.17.4"
+    id("org.jetbrains.intellij.platform") version "2.0.1"
     kotlin("jvm") version "1.9.25"
     id("org.jetbrains.kotlinx.kover") version "0.8.3"
 }
@@ -18,15 +19,33 @@ kotlin {
     }
 }
 
-intellij {
-    version.set("223.7571.182")
-    pluginName.set("Git extended update-index")
-    updateSinceUntilBuild.set(true)
-    sameSinceUntilBuild.set(false)
-    plugins.set(listOf("vcs-git"))
+intellijPlatform {
+    pluginConfiguration {
+        name = "Git extended update-index"
+        ideaVersion {
+            untilBuild = ""
+        }
+    }
+
+    publishing {
+        token.set(
+            project.findProperty("intellij.publish.token") as String?
+        )
+        channels.set(listOf("stable"))
+    }
 }
 
 dependencies {
+    intellijPlatform {
+        create("IC", "2022.3")
+        bundledPlugin("Git4Idea")
+
+        pluginVerifier()
+        instrumentationTools()
+
+        testFramework(TestFrameworkType.Platform)
+    }
+
     testImplementation(platform("org.junit:junit-bom:5.11.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.junit.platform:junit-platform-launcher")
@@ -36,17 +55,6 @@ dependencies {
 }
 
 tasks {
-    publishPlugin {
-        token.set(
-            project.findProperty("intellij.publish.token") as String?
-        )
-        channels.set(listOf("stable"))
-    }
-
-    patchPluginXml {
-        untilBuild.set("")
-    }
-
     test {
         useJUnitPlatform()
         jvmArgs(
@@ -64,4 +72,8 @@ tasks {
 
 repositories {
     mavenCentral()
+
+    intellijPlatform {
+        defaultRepositories()
+    }
 }

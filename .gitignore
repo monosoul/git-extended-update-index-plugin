@@ -39,3 +39,5 @@ target/
 *.iml
 
 idea-logs-*
+
+.intellijPlatform
