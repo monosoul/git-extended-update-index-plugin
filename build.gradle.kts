@@ -20,6 +20,7 @@ kotlin {
 }
 
 intellijPlatform {
+    buildSearchableOptions = true
     pluginConfiguration {
         name = "Git extended update-index"
         ideaVersion {
@@ -37,7 +38,7 @@ intellijPlatform {
 
 dependencies {
     intellijPlatform {
-        create("IC", "2022.3")
+        create(type = "IC", version = "2024.1", useInstaller = false)
         bundledPlugin("Git4Idea")
 
         pluginVerifier()

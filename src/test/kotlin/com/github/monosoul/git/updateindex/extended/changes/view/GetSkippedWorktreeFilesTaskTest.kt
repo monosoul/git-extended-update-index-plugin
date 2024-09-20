@@ -157,7 +157,7 @@ internal class GetSkippedWorktreeFilesTaskTest {
         }
 
         expectThat(captor.captured) {
-            get { printableCommandLine() } isEqualTo "git ls-files -v"
+            get { printableCommandLine() } isEqualTo "\"\" ls-files -v"
         }
     }
 
