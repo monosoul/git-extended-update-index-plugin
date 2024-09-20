@@ -11,10 +11,12 @@ import com.intellij.mock.MockApplication
 import com.intellij.mock.MockLocalFileSystem
 import com.intellij.mock.MockProject
 import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.application.AsyncExecutionService
 import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.util.Disposer.dispose
 import com.intellij.openapi.vcs.FilePath
 import com.intellij.openapi.vcs.LocalFilePath
+import com.intellij.openapi.vcs.actions.VcsContextFactory
 import com.intellij.openapi.vcs.changes.ui.ChangesBrowserNode
 import com.intellij.openapi.vcs.changes.ui.ChangesViewModelBuilder
 import com.intellij.openapi.vcs.changes.ui.NoneChangesGroupingFactory
@@ -22,6 +24,7 @@ import com.intellij.openapi.vcs.changes.ui.TreeModelBuilder
 import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.vfs.VirtualFileManager
+import com.intellij.peer.impl.VcsContextFactoryImpl
 import io.mockk.Called
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
@@ -53,6 +56,10 @@ internal class SkippedWorktreeChangesViewModifierTest {
     private lateinit var project: MockProject
     private lateinit var propertiesComponent: AppPropertyService
     private lateinit var localFileSystem: MockLocalFileSystem
+    private lateinit var vcsContextFactory: VcsContextFactory
+
+    @MockK(relaxed = true)
+    private lateinit var asyncExecutionService: AsyncExecutionService
 
     @MockK(relaxUnitFun = true)
     private lateinit var progressManager: ProgressManager
@@ -81,6 +88,11 @@ internal class SkippedWorktreeChangesViewModifierTest {
 
         application.registerService(virtualFileManager, parent)
         every { virtualFileManager.getFileSystem(any()) } returns localFileSystem
+
+        vcsContextFactory = VcsContextFactoryImpl()
+        application.registerService(vcsContextFactory, parent)
+
+        application.registerService(asyncExecutionService, parent)
 
         modifier = SkippedWorktreeChangesViewModifier(project)
     }

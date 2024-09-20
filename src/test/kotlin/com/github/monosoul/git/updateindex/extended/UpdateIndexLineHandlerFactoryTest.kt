@@ -74,6 +74,7 @@ internal class UpdateIndexLineHandlerFactoryTest {
         every { gitExecutableManager.tryGetVersion(any()) } returns CAN_NOT_OVERRIDE_GIT_CONFIG_FOR_COMMAND
         every { gitExecutableManager.getExecutable(project) } returns gitExecutable
         every { gitExecutable.exePath } returns exePath
+        every { gitExecutable.isLocal } returns true
     }
 
     @AfterEach

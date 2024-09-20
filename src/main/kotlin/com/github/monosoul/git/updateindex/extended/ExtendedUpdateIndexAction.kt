@@ -6,6 +6,7 @@ import com.github.monosoul.git.updateindex.extended.ExtendedUpdateIndexCommand.N
 import com.github.monosoul.git.updateindex.extended.ExtendedUpdateIndexCommand.SKIP_WORKTREE
 import com.github.monosoul.git.updateindex.extended.support.CommandInvoker
 import com.github.monosoul.git.updateindex.extended.support.PresentationUpdater
+import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.Presentation
 import com.intellij.openapi.diagnostic.debug
@@ -18,6 +19,8 @@ import com.intellij.openapi.vfs.VirtualFile
 sealed class ExtendedUpdateIndexAction(private val command: ExtendedUpdateIndexCommand) : DumbAwareAction() {
 
     private val logger = thisLogger()
+
+    override fun getActionUpdateThread() = ActionUpdateThread.BGT
 
     override fun update(event: AnActionEvent) {
         event.run {
