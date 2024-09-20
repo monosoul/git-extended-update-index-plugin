@@ -36,7 +36,7 @@ class ToggleSkippedWorktreeAction : ToggleAction() {
         logger.debug("Set property value: {}", state)
         val project = event.project ?: return
 
-        ChangesViewManager.getInstanceEx(project).refreshImmediately()
+        ChangesViewManager.getInstanceEx(project).scheduleRefresh()
     }
 
     private fun Project.updatePresentation(presentation: Presentation) {

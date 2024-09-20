@@ -105,7 +105,7 @@ internal class ToggleSkippedWorktreeActionTest {
         expectThat(propertiesComponent.getBoolean(PROPERTY)) isEqualTo isSelected
 
         verifyAll {
-            changesViewManager.refreshImmediately()
+            changesViewManager.scheduleRefresh()
         }
     }
 
