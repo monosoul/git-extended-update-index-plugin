@@ -24,7 +24,7 @@ intellijPlatform {
     pluginConfiguration {
         name = "Git extended update-index"
         ideaVersion {
-            untilBuild = ""
+            untilBuild.set(provider { null })
         }
     }
 
