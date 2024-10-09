@@ -47,11 +47,11 @@ dependencies {
         testFramework(TestFrameworkType.Platform)
     }
 
-    testImplementation(platform("org.junit:junit-bom:5.11.1"))
+    testImplementation(platform("org.junit:junit-bom:5.11.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.junit.platform:junit-platform-launcher")
     testImplementation("io.strikt:strikt-jvm:0.35.1")
-    testImplementation("io.mockk:mockk:1.13.12")
+    testImplementation("io.mockk:mockk:1.13.13")
     testImplementation("org.apache.commons:commons-lang3:3.17.0")
 }
 
