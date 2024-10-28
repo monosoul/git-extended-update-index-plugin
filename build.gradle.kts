@@ -47,7 +47,7 @@ dependencies {
         testFramework(TestFrameworkType.Platform)
     }
 
-    testImplementation(platform("org.junit:junit-bom:5.11.2"))
+    testImplementation(platform("org.junit:junit-bom:5.11.3"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.junit.platform:junit-platform-launcher")
     testImplementation("io.strikt:strikt-jvm:0.35.1")
