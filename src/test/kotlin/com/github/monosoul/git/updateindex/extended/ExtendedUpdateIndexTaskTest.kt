@@ -2,12 +2,16 @@ package com.github.monosoul.git.updateindex.extended
 
 import com.github.monosoul.git.updateindex.extended.ExtendedUpdateIndexTaskTest.FilesAndCommandArgumentsSource.NoVcsRoot
 import com.github.monosoul.git.updateindex.extended.ExtendedUpdateIndexTaskTest.FilesAndCommandArgumentsSource.WithVcsRoot
+import com.github.monosoul.git.updateindex.extended.changes.view.SkippedWorktreeFilesCache
 import com.intellij.mock.MockApplication
 import com.intellij.mock.MockProject
 import com.intellij.openapi.application.ApplicationManager.setApplication
 import com.intellij.openapi.progress.ProgressIndicator
 import com.intellij.openapi.util.Disposer.dispose
 import com.intellij.openapi.vcs.ProjectLevelVcsManager
+import com.intellij.openapi.vcs.changes.ChangesViewEx
+import com.intellij.openapi.vcs.changes.ChangesViewI
+import com.intellij.openapi.vcs.changes.ChangesViewManager
 import com.intellij.openapi.vcs.changes.VcsDirtyScopeManager
 import com.intellij.openapi.vfs.VirtualFile
 import git4idea.commands.Git
@@ -18,6 +22,7 @@ import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
+import io.mockk.spyk
 import io.mockk.verify
 import io.mockk.verifyAll
 import io.mockk.verifyOrder
@@ -56,6 +61,11 @@ internal class ExtendedUpdateIndexTaskTest {
     @MockK
     private lateinit var gitCommandResult: GitCommandResult
 
+    @MockK(relaxUnitFun = true)
+    private lateinit var changesViewManager: ChangesViewManager
+
+    private lateinit var cache: SkippedWorktreeFilesCache
+
     @BeforeEach
     fun setUp() {
         parent = TestDisposable()
@@ -68,6 +78,12 @@ internal class ExtendedUpdateIndexTaskTest {
         project.registerService(vcsManager, parent)
         project.registerService(dirtyScopeManager, parent)
         project.registerService(updateIndexLineHandlerFactory, parent)
+        project.registerService<ChangesViewI>(changesViewManager, parent)
+        project.registerService<ChangesViewEx>(changesViewManager, parent)
+
+        // Register the cache service with a spy to verify clear() calls
+        cache = spyk(SkippedWorktreeFilesCache(project))
+        project.registerService(SkippedWorktreeFilesCache::class.java, cache, parent)
 
         every { updateIndexLineHandlerFactory.invoke(any(), any(), any()) } returns gitLineHandler
         every { git.runCommand(any<GitLineHandler>()) } returns gitCommandResult
@@ -98,6 +114,10 @@ internal class ExtendedUpdateIndexTaskTest {
             gitLineHandler wasNot Called
             dirtyScopeManager wasNot Called
         }
+        verify {
+            cache.clear()
+            changesViewManager.scheduleRefresh()
+        }
     }
 
     @ParameterizedTest
@@ -126,6 +146,10 @@ internal class ExtendedUpdateIndexTaskTest {
         }
         verify(exactly = files.size) {
             dirtyScopeManager.fileDirty(any<VirtualFile>())
+        }
+        verify {
+            cache.clear()
+            changesViewManager.scheduleRefresh()
         }
     }
 
@@ -158,6 +182,10 @@ internal class ExtendedUpdateIndexTaskTest {
         }
         verify(exactly = files.size) {
             dirtyScopeManager.fileDirty(any<VirtualFile>())
+        }
+        verify {
+            cache.clear()
+            changesViewManager.scheduleRefresh()
         }
     }
 
