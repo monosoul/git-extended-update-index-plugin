@@ -13,7 +13,9 @@ import git4idea.commands.Git
 import git4idea.commands.GitCommand.LS_FILES
 import git4idea.commands.GitCommandResult
 import git4idea.commands.GitLineHandler
+import org.jetbrains.annotations.Blocking
 
+@Blocking
 fun getSkippedWorktreeFiles(project: Project): List<FilePath> {
     val vcsManager = ProjectLevelVcsManager.getInstance(project) ?: return emptyList()
 
