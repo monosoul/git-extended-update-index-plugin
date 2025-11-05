@@ -10,13 +10,16 @@ import com.intellij.ide.util.PropertiesComponent
 import com.intellij.mock.MockApplication
 import com.intellij.mock.MockLocalFileSystem
 import com.intellij.mock.MockProject
+import com.intellij.mock.MockVirtualFile
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.application.AsyncExecutionService
-import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.util.Disposer.dispose
+import com.intellij.openapi.vcs.ProjectLevelVcsManager
 import com.intellij.openapi.vcs.FilePath
 import com.intellij.openapi.vcs.LocalFilePath
+import com.intellij.openapi.vcs.VcsRoot
 import com.intellij.openapi.vcs.actions.VcsContextFactory
+import com.intellij.openapi.vcs.changes.committed.MockAbstractVcs
 import com.intellij.openapi.vcs.changes.ui.ChangesBrowserNode
 import com.intellij.openapi.vcs.changes.ui.ChangesViewModelBuilder
 import com.intellij.openapi.vcs.changes.ui.NoneChangesGroupingFactory
@@ -25,11 +28,9 @@ import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.vfs.VirtualFileManager
 import com.intellij.peer.impl.VcsContextFactoryImpl
-import io.mockk.Called
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import io.mockk.verify
 import org.apache.commons.lang3.RandomStringUtils
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
@@ -62,10 +63,16 @@ internal class SkippedWorktreeChangesViewModifierTest {
     private lateinit var asyncExecutionService: AsyncExecutionService
 
     @MockK(relaxUnitFun = true)
-    private lateinit var progressManager: ProgressManager
-
-    @MockK(relaxUnitFun = true)
     private lateinit var virtualFileManager: VirtualFileManager
+
+    @MockK
+    private lateinit var vcsManager: ProjectLevelVcsManager
+
+    @MockK
+    private lateinit var git: git4idea.commands.Git
+
+    @MockK(relaxed = true)
+    private lateinit var gitExecutableManager: git4idea.config.GitExecutableManager
 
     private lateinit var modifier: SkippedWorktreeChangesViewModifier
 
@@ -81,8 +88,6 @@ internal class SkippedWorktreeChangesViewModifierTest {
         propertiesComponent = AppPropertyService()
         application.registerService<PropertiesComponent>(propertiesComponent, parent)
 
-        application.registerService(progressManager, parent)
-
         localFileSystem = MockLocalFileSystem()
         application.registerService<LocalFileSystem>(localFileSystem, parent)
 
@@ -93,6 +98,14 @@ internal class SkippedWorktreeChangesViewModifierTest {
         application.registerService(vcsContextFactory, parent)
 
         application.registerService(asyncExecutionService, parent)
+
+        application.registerService(git, parent)
+        application.registerService(gitExecutableManager, parent)
+        project.registerService(vcsManager, parent)
+
+        // Register the cache service
+        val cache = SkippedWorktreeFilesCache(project)
+        project.registerService(SkippedWorktreeFilesCache::class.java, cache, parent)
 
         modifier = SkippedWorktreeChangesViewModifier(project)
     }
@@ -107,10 +120,6 @@ internal class SkippedWorktreeChangesViewModifierTest {
         @MockK modelBuilder: ChangesViewModelBuilder
     ) {
         modifier.modifyTreeModelBuilder(modelBuilder)
-
-        verify {
-            progressManager wasNot Called
-        }
     }
 
     @Test
@@ -120,20 +129,18 @@ internal class SkippedWorktreeChangesViewModifierTest {
         propertiesComponent.setValue(PROPERTY, false)
 
         modifier.modifyTreeModelBuilder(modelBuilder)
-
-        verify {
-            progressManager wasNot Called
-        }
     }
 
     @ParameterizedTest
     @ArgumentsSource(FilesArgumentSource::class)
     fun `should add a new root node with skipped files`(files: List<FilePath>) {
-        every { progressManager.run(any<GetSkippedWorktreeFilesTask>()) } returns files
-
         propertiesComponent.setValue(PROPERTY, true)
-        val builder = TreeModelBuilder(project, NoneChangesGroupingFactory)
+        
+        // Pre-populate the cache with test data
+        val cache = SkippedWorktreeFilesCache.getInstance(project)
+        cache.setCachedFiles(files)
 
+        val builder = TreeModelBuilder(project, NoneChangesGroupingFactory)
         modifier.modifyTreeModelBuilder(builder)
         val model = builder.build()
 

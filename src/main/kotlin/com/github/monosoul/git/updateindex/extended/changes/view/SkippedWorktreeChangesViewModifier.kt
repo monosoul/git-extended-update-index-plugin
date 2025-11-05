@@ -4,14 +4,11 @@ import com.github.monosoul.git.updateindex.extended.changes.view.Constants.PROPE
 import com.intellij.ide.util.PropertiesComponent
 import com.intellij.openapi.diagnostic.debug
 import com.intellij.openapi.diagnostic.logger
-import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vcs.changes.ChangesViewModifier
 import com.intellij.openapi.vcs.changes.ui.ChangesViewModelBuilder
 
 class SkippedWorktreeChangesViewModifier(private val project: Project) : ChangesViewModifier {
-
-    private val logger = logger<SkippedWorktreeChangesViewModifier>()
 
     override fun modifyTreeModelBuilder(modelBuilder: ChangesViewModelBuilder) {
         val showSkippedTree = PropertiesComponent.getInstance().getBoolean(PROPERTY, false)
@@ -20,12 +17,19 @@ class SkippedWorktreeChangesViewModifier(private val project: Project) : Changes
             return
         }
 
-        val skippedFiles = ProgressManager.getInstance().run(GetSkippedWorktreeFilesTask(project))
+        val cache = SkippedWorktreeFilesCache.getInstance(project)
+        val skippedFiles = cache.getOrLoad()
 
-        logger.debug { "Skipped files: $skippedFiles" }
+        if (skippedFiles != null && skippedFiles.isNotEmpty()) {
+            logger.debug { "Skipped files: $skippedFiles" }
 
-        val rootNode = ChangesBrowserSkippedWorktreeNode(project, skippedFiles)
-        modelBuilder.insertSubtreeRoot(rootNode)
-        modelBuilder.insertFilesIntoNode(skippedFiles.mapNotNull { it.virtualFile }, rootNode)
+            val rootNode = ChangesBrowserSkippedWorktreeNode(project, skippedFiles)
+            modelBuilder.insertSubtreeRoot(rootNode)
+            modelBuilder.insertFilesIntoNode(skippedFiles.mapNotNull { it.virtualFile }, rootNode)
+        }
+    }
+
+    companion object {
+        private val logger = logger<SkippedWorktreeChangesViewModifier>()
     }
 }

@@ -35,6 +35,9 @@
         <projectService
                 serviceImplementation="com.github.monosoul.git.updateindex.extended.support.PresentationUpdater"/>
 
+        <projectService
+                serviceImplementation="com.github.monosoul.git.updateindex.extended.changes.view.SkippedWorktreeFilesCache"/>
+
         <vcs.changes.changesViewModifier
                 implementation="com.github.monosoul.git.updateindex.extended.changes.view.SkippedWorktreeChangesViewModifier"/>
     </extensions>

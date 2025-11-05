@@ -24,9 +24,9 @@ import git4idea.config.GitExecutableManager
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import io.mockk.mockk
 import io.mockk.slot
 import io.mockk.verifyAll
+import kotlinx.coroutines.runBlocking
 import org.apache.commons.lang3.RandomStringUtils
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
@@ -70,8 +70,6 @@ internal class GetSkippedWorktreeFilesTaskTest {
     @MockK
     private lateinit var git: Git
 
-    private lateinit var task: GetSkippedWorktreeFilesTask
-
     @BeforeEach
     fun setUp() {
         parent = TestDisposable()
@@ -95,8 +93,6 @@ internal class GetSkippedWorktreeFilesTaskTest {
         vcsRoot = VcsRoot(vcs, MockVirtualFile(true, "vcsRoot"))
 
         every { vcsManager.allVcsRoots } returns arrayOf(vcsRoot)
-
-        task = GetSkippedWorktreeFilesTask(project)
     }
 
     @AfterEach
@@ -112,8 +108,9 @@ internal class GetSkippedWorktreeFilesTaskTest {
     fun `should do nothing if the result doesn't contain skipped files`(result: GitCommandResult) {
         every { git.runCommand(any<GitLineHandler>()) } returns result
 
-        task.run(mockk())
-        val actual = task.result
+        val actual = runBlocking {
+            getSkippedWorktreeFiles(project)
+        }
 
         expectThat(actual).isEmpty()
 
@@ -125,8 +122,9 @@ internal class GetSkippedWorktreeFilesTaskTest {
     fun `should return a list of skipped files`(result: GitCommandResult) {
         every { git.runCommand(any<GitLineHandler>()) } returns result
 
-        task.run(mockk())
-        val actual = task.result
+        val actual = runBlocking {
+            getSkippedWorktreeFiles(project)
+        }
 
         expectThat(actual)
             .hasSize(result.output.size)
@@ -141,10 +139,10 @@ internal class GetSkippedWorktreeFilesTaskTest {
     fun `should throw an exception in case of an error`(result: GitCommandResult) {
         every { git.runCommand(any<GitLineHandler>()) } returns result
 
-        task.run(mockk())
-
         expectThrows<VcsException> {
-            task.result
+            runBlocking {
+                getSkippedWorktreeFiles(project)
+            }
         }.message isEqualTo result.errorOutputAsJoinedString
 
         verifyGitCall()
