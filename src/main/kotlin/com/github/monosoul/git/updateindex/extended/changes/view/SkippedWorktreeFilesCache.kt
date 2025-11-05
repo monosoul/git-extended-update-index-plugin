@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicReference
 class SkippedWorktreeFilesCache(private val project: Project) {
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default.limitedParallelism(1))
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO.limitedParallelism(1))
     private val cachedFiles = AtomicReference<List<FilePath>?>(null)
 
     init {
