@@ -1,11 +1,9 @@
 package com.github.monosoul.git.updateindex.extended.changes.view
 
-import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
-import com.intellij.openapi.project.Project
-import com.intellij.openapi.Disposable
 import com.intellij.openapi.diagnostic.logger
+import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.vcs.FilePath
 import com.intellij.openapi.vcs.changes.ChangesViewManager
@@ -24,12 +22,7 @@ class SkippedWorktreeFilesCache(private val project: Project) {
     private var isLoading = false
 
     init {
-        // Cancel the scope when the project is disposed
-        Disposer.register(project, object : Disposable {
-            override fun dispose() {
-                scope.cancel()
-            }
-        })
+        Disposer.register(project) { scope.cancel() }
     }
 
     fun getOrLoad(): List<FilePath>? {
@@ -45,9 +38,7 @@ class SkippedWorktreeFilesCache(private val project: Project) {
                         getSkippedWorktreeFiles(project)
                     }
                     cachedFiles = files
-                    ApplicationManager.getApplication().invokeLater {
-                        ChangesViewManager.getInstanceEx(project).scheduleRefresh()
-                    }
+                    ChangesViewManager.getInstanceEx(project).scheduleRefresh()
                 } catch (e: Exception) {
                     // Log error but don't crash
                     logger.warn("Failed to load skipped worktree files", e)
