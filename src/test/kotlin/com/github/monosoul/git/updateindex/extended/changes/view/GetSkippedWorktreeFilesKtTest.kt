@@ -46,7 +46,7 @@ import kotlin.random.Random
 import kotlin.random.nextInt
 
 @ExtendWith(MockKExtension::class)
-internal class GetSkippedWorktreeFilesTaskTest {
+internal class GetSkippedWorktreeFilesKtTest {
 
     private lateinit var parent: TestDisposable
     private lateinit var application: MockApplication
