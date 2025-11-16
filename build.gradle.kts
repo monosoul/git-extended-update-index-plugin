@@ -7,9 +7,9 @@ import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 group = "com.github.monosoul"
 
 plugins {
-    id("org.jetbrains.intellij.platform") version "2.1.0"
+    id("org.jetbrains.intellij.platform") version "2.10.4"
     kotlin("jvm") version "1.9.25"
-    id("org.jetbrains.kotlinx.kover") version "0.8.3"
+    id("org.jetbrains.kotlinx.kover") version "0.9.3"
 }
 
 kotlin {
@@ -47,12 +47,12 @@ dependencies {
         testFramework(TestFrameworkType.Platform)
     }
 
-    testImplementation(platform("org.junit:junit-bom:5.11.3"))
+    testImplementation(platform("org.junit:junit-bom:5.14.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.junit.platform:junit-platform-launcher")
     testImplementation("io.strikt:strikt-jvm:0.35.1")
-    testImplementation("io.mockk:mockk:1.13.13")
-    testImplementation("org.apache.commons:commons-lang3:3.17.0")
+    testImplementation("io.mockk:mockk:1.14.6")
+    testImplementation("org.apache.commons:commons-lang3:3.20.0")
 }
 
 tasks {
