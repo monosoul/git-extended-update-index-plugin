@@ -8,7 +8,7 @@ group = "com.github.monosoul"
 
 plugins {
     id("org.jetbrains.intellij.platform") version "2.1.0"
-    kotlin("jvm") version "1.9.25"
+    kotlin("jvm") version "2.2.21"
     id("org.jetbrains.kotlinx.kover") version "0.8.3"
 }
 
@@ -47,7 +47,7 @@ dependencies {
         testFramework(TestFrameworkType.Platform)
     }
 
-    testImplementation(platform("org.junit:junit-bom:5.11.3"))
+    testImplementation(platform("org.junit:junit-bom:6.0.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.junit.platform:junit-platform-launcher")
     testImplementation("io.strikt:strikt-jvm:0.35.1")
